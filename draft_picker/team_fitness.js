@@ -75,13 +75,12 @@ class TeamFitness {
     // TODO
     // take into account team composition for map
 
+    // console.log(entity)
+
     const composition = entity.map((e) => this.rawData[e].role).sort();
     const hasAcceptableComposition = acceptableCompositions.some(c => composition.every((v, i) => v === c[i]))    
-    if (!hasAcceptableComposition) {
-      return 0;
-    }
+    let score = hasAcceptableComposition ? 50 : -50;
 
-    let score = 0.0;
     score += entity.reduce((sum, e) => sum + this.data[e].tiers, 0) / 5;
     score += entity.reduce((sum, e) => sum + this.data[e].win_percent, 0) / 5;
     score += entity.reduce((sum, e) => sum + this.data[e].map, 0) / 5;

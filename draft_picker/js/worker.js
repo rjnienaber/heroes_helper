@@ -9,10 +9,12 @@ onmessage = async (e) => {
     const solver = new Solver(data, draftInfo, Genetic);
     const result = await solver.solve();
     if (!bestResult || bestResult.fitness < result.fitness) {
-      postMessage(result);
+      postMessage({result, isFinished: false});
       lastChange = 0;
       bestResult = result;
     }
     lastChange += 1;
   }
+  
+  postMessage({result: bestResult, isFinished: true});
 }

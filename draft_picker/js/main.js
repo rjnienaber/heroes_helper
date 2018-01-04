@@ -12,14 +12,17 @@ function loadStats() {
 };
 
 let initializing = true;
+const cache = {};
 async function runSolver() {
   if (initializing)
     return;
 
+  const ourTeam = $('#select-blue-team')[0].selectize.items;
+
   const draftInfo = {
     map: $('#select-map')[0].selectize.items[0],
     unavailable: $('#select-exclude')[0].selectize.items,
-    ourTeam: $('#select-blue-team')[0].selectize.items,
+    ourTeam,
     ourBans: $('#select-blue-bans')[0].selectize.items,
     theirTeam: $('#select-red-team')[0].selectize.items,
     theirBans: $('#select-red-bans')[0].selectize.items
@@ -30,15 +33,20 @@ async function runSolver() {
   $('#calculating').toggle();
   suggestedPicks.toggle();
 
-  const myWorker = new Worker('js/worker.js');
-  myWorker.onmessage = function(e) {
+  if (cache.worker)
+    cache.worker.terminate();
+  cache.worker = new Worker('js/worker.js');
+
+  cache.worker.onmessage = function(e) {
     $('#calculating').hide();
     suggestedPicks.show();
-    const result = e.data;
-    suggestedPicks.text(`${result.team.join(', ')} (score: ${result.fitness.toFixed(2)})`);        
+    const result = e.data.result;
+    const message = !e.data.isFinished ? ' - Refining' : '';
+    const team = _.difference(result.team, ourTeam);
+    suggestedPicks.text(`${team.join(', ')} (score: ${result.fitness.toFixed(2)}${message})`);        
   }
 
-  myWorker.postMessage([window.stats.rawData, draftInfo]);
+  cache.worker.postMessage([window.stats.rawData, draftInfo]);
 }
 
 function itemAdd(select, hero) {

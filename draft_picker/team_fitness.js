@@ -72,11 +72,6 @@ class TeamFitness {
   }
 
   fitness(entity) {
-    // TODO
-    // take into account team composition for map
-
-    // console.log(entity)
-
     const composition = entity.map((e) => this.rawData[e].role).sort();
     const hasAcceptableComposition = acceptableCompositions.some(c => composition.every((v, i) => v === c[i]))    
     let score = hasAcceptableComposition ? 50 : -50;

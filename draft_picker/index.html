@@ -1,0 +1,158 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>HOTS Draft Picker</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--         <link rel="apple-touch-icon" href="apple-touch-icon.png">
+ -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+            .row {
+              padding-top: 5px;
+            }
+
+            .glyphicon-refresh-animate {
+                -animation: spin .7s infinite linear;
+                -webkit-animation: spin2 .7s infinite linear;
+            }
+
+            @-webkit-keyframes spin2 {
+                from { -webkit-transform: rotate(0deg);}
+                to { -webkit-transform: rotate(360deg);}
+            }
+
+            @keyframes spin {
+                from { transform: scale(1) rotate(0deg);}
+                to { transform: scale(1) rotate(360deg);}
+            }
+                  
+                  .glyphicon-refresh.spinning {
+              transform-origin: 25% 50%;
+            }
+        </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">HOTS Draft Picker</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <hr>
+      <div class="row">
+        <div class="col-xs-3">
+          <span>Map</span>
+        </div>
+        <div class="col-xs-9">
+          <select id="select-map" placeholder="Select a map">
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <span>Exclude heroes</span>
+        </div>
+        <div class="col-xs-9">
+          <select id="select-exclude" class="hero-select" multiple placeholder="Select heroes to exclude">
+          </select> 
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-12">
+          <h4>Blue Team</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <span>Bans</span>
+        </div>
+        <div class="col-xs-9">
+          <select id="select-blue-bans" class="hero-select" multiple placeholder="Select heroes to ban">
+          </select> 
+        </div>
+      </div>      
+      <div class="row">
+        <div class="col-xs-3">
+          <span>Team</span>
+        </div>
+        <div class="col-xs-9">
+          <select id="select-blue-team" class="hero-select" multiple placeholder="Select heroes for team">
+          </select> 
+        </div>
+      </div>      
+      <div class="row">
+        <div class="col-xs-3">
+          <span>Suggested Picks</span>
+        </div>
+        <div class="col-xs-9">
+          <span id="suggested-picks"></span>
+          <span id="calculating" style="display: none">
+            <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Calculating...
+            </span>
+        </div>
+      </div>      
+      <hr>
+      <div class="row">
+        <div class="col-xs-12">
+          <h4>Red Team</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <span>Bans</span>
+        </div>
+        <div class="col-xs-9">
+          <select id="select-red-bans" class="hero-select" multiple placeholder="Select heroes to ban">
+          </select> 
+        </div>
+      </div>      
+      <div class="row">
+        <div class="col-xs-3">
+          <span>Team</span>
+        </div>
+        <div class="col-xs-9">
+          <select id="select-red-team" class="hero-select" multiple placeholder="Select heroes for team">
+          </select> 
+        </div>
+      </div>      
+      <hr>
+    </div> 
+    <!-- /container -->        
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
+    <script src="node_modules/@skymaker/genetic-js/genetic-js.min.js"></script>
+    <script src="node_modules/@skymaker/genetic-js/genetic-js.min.js"></script>
+    <script src="node_modules/@skymaker/genetic-js/genetic-js.min.js"></script>
+    <script src="js/team_fitness.js"></script>
+    <script src="js/solver.js"></script>
+    <script src="js/main.js"></script>
+    </body>
+</html>

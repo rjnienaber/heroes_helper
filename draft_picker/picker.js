@@ -8,12 +8,12 @@ async function main() {
     const json = await readFile('../collation/stats.json');
     const data = JSON.parse(json.toString('utf-8'));
     const draftInfo = {
-      map: 'Battlefield of Eternity',
-      unavailable: ['Cho', 'Gall'],  // make it easy on ourselves for the moment
-      ourTeam: ['Greymane', 'Samuro', 'Cassia', 'Johanna', 'Malfurion'],
-      ourBans: ['Sonya', 'Arthas'],
-      theirTeam: ['E.T.C.', 'Hanzo', 'Zul\'jin', 'Gul\'dan', 'Stukov'],
-      theirBans: ['Genji']
+      map: 'Tomb of the Spider Queen',
+      unavailable: [],
+      ourTeam: [],
+      ourBans: [],
+      theirTeam: [],
+      theirBans: []
     };
 
 
@@ -30,6 +30,7 @@ async function main() {
       }
       lastChange += 1;
     }
+
     console.log(`Finished: ${new Date().toISOString()}`)
   } catch (err) {
     console.log(err);  

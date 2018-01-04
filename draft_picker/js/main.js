@@ -12,7 +12,7 @@ function loadStats() {
 };
 
 let initializing = true;
-async function runSolver(data) {
+async function runSolver() {
   if (initializing)
     return;
 
@@ -26,14 +26,19 @@ async function runSolver(data) {
   };
 
   const suggestedPicks = $('#suggested-picks');
+  suggestedPicks.text('');
   $('#calculating').toggle();
   suggestedPicks.toggle();
-  suggestedPicks.text('');
-  setTimeout(() => {
-    suggestedPicks.text(new Date().toISOString());
-    $('#calculating').toggle();
-    suggestedPicks.toggle();
-}, 1000);
+
+  const myWorker = new Worker('js/worker.js');
+  myWorker.onmessage = function(e) {
+    $('#calculating').hide();
+    suggestedPicks.show();
+    const result = e.data;
+    suggestedPicks.text(`${result.team.join(', ')} (score: ${result.fitness.toFixed(2)})`);        
+  }
+
+  myWorker.postMessage([window.stats.rawData, draftInfo]);
 }
 
 function itemAdd(select, hero) {
@@ -66,8 +71,10 @@ function initializeHeroSelect(selector, heroes, maxItems) {
 // main function
 (async () => {
   const stats = await loadStats();
+  window.stats = stats;
   const heroes =  stats.heroes.map((hero) => ({hero}));
   const maps = stats.maps.map((map) => ({map}));
+
 
   // wait for document ready
   await new Promise((resolve) => $(() => resolve()));
@@ -89,7 +96,3 @@ function initializeHeroSelect(selector, heroes, maxItems) {
   $('#select-exclude')[0].selectize.setValue(['Cho', 'Gall']);
   initializing = false;
 })();
-
-  
-
-

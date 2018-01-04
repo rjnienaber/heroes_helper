@@ -96,10 +96,10 @@ class Solver {
 
     let unavailable = [
       draftInfo.unavailable,
-      draftInfo.ourBans,
-      draftInfo.ourTeam,
-      draftInfo.theirBans, 
-      draftInfo.theirTeam
+      draftInfo.blueTeamBans,
+      draftInfo.blueTeam,
+      draftInfo.redTeamBans, 
+      draftInfo.redTeam
     ];
 
     const unusable = unavailable.reduce((sum, v) => sum.concat(v), []);
@@ -112,7 +112,7 @@ class Solver {
 
     genetic.seed = () => {
       while (true) {
-        const seed = genetic.draftInfo.ourTeam.slice(0);
+        const seed = genetic.draftInfo.blueTeam.slice(0);
         while (seed.length < 5) {
           seed.push(genetic.randomHero());
         }
@@ -139,11 +139,11 @@ class Solver {
       // calculate opposing team counters
       const theirCounters = new Set();
       entity.forEach(e => genetic.rawData[e].counters.forEach(s => theirCounters.add(s)));
-      score += genetic.draftInfo.theirTeam.reduce((sum, hero) => sum + (theirCounters.has(hero) ? -30 : 0), 0);
+      score += genetic.draftInfo.redTeam.reduce((sum, hero) => sum + (theirCounters.has(hero) ? -30 : 0), 0);
 
       // calculate our team counters to opposing team
       const ourCounters = new Set();
-      genetic.draftInfo.theirTeam.forEach(e => genetic.rawData[e].counters.forEach(s => ourCounters.add(s)));
+      genetic.draftInfo.redTeam.forEach(e => genetic.rawData[e].counters.forEach(s => ourCounters.add(s)));
       score += entity.reduce((sum, hero) => sum + (ourCounters.has(hero) ? 30 : 0), 0);
 
       return score;
@@ -151,7 +151,7 @@ class Solver {
 
     genetic.crossover = (mother, father) => {
       // start trying to do two-point crossover
-      const startPoint = genetic.draftInfo.ourTeam.length;
+      const startPoint = genetic.draftInfo.blueTeam.length;
       const length = mother.length - startPoint;
       if (length === 0) {
         // no more slots to pick

@@ -17,15 +17,16 @@ async function runSolver() {
   if (initializing)
     return;
 
-  const ourTeam = $('#select-blue-team')[0].selectize.items;
+  const blueTeam = $('#select-blue-team')[0].selectize.items;
 
+  // rename to blue team
   const draftInfo = {
     map: $('#select-map')[0].selectize.items[0],
     unavailable: $('#select-exclude')[0].selectize.items,
-    ourTeam,
-    ourBans: $('#select-blue-bans')[0].selectize.items,
-    theirTeam: $('#select-red-team')[0].selectize.items,
-    theirBans: $('#select-red-bans')[0].selectize.items
+    blueTeam,
+    blueTeamBans: $('#select-blue-bans')[0].selectize.items,
+    redTeam: $('#select-red-team')[0].selectize.items,
+    redTeamBans: $('#select-red-bans')[0].selectize.items
   };
 
   const suggestedPicks = $('#suggested-picks');
@@ -40,7 +41,7 @@ async function runSolver() {
     const result = e.data.result;
     if (e.data.isFinished)
       $('#calculating').hide();
-    const team = _.difference(result.team, ourTeam);
+    const team = _.difference(result.team, blueTeam);
     suggestedPicks.text(`${team.join(', ')} (score: ${result.fitness.toFixed(2)})`);        
   }
 
@@ -70,7 +71,6 @@ function initializeHeroSelect(selector, heroes, maxItems) {
     create: false,
     closeAfterSelect: true,
     openOnFocus: false,
-    // openOnFocus: false,
     onItemAdd: (value) => itemAdd(select[0], value),
     onItemRemove: (value) => itemRemove(select[0], value)
   });

@@ -1,7 +1,10 @@
 const fs = require('fs');
 const util = require('util');
-const { Solver } = require('./solver');
+const { Solver } = require('./js/solver');
 const readFile = util.promisify(fs.readFile);
+const Genetic = require('@skymaker/genetic-js')
+const { TeamFitness } = require('./js/team_fitness');
+
 
 async function main() {
   try {
@@ -20,7 +23,8 @@ async function main() {
     let bestResult;
     let lastChange = 0;
     while (lastChange !== 20) {
-      const solver = new Solver(data, draftInfo);
+      const fitness = new TeamFitness(data, draftInfo);
+      const solver = new Solver(data, draftInfo, fitness, Genetic);
       const result = await solver.solve();
       if (!bestResult || bestResult.fitness < result.fitness) {
         const composition = result.team.map((e) => data[e].role);

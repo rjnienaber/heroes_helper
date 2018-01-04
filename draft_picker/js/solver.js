@@ -1,10 +1,8 @@
-const Genetic = require('@skymaker/genetic-js')
-const { TeamFitness } = require('./team_fitness');
 
 const TEAM_SIZE = 5;
 
 class Solver {
-  constructor(data, draftInfo) {
+  constructor(data, draftInfo, fitness, Genetic) {
     this.data = data;
     this.draftInfo = draftInfo;
 
@@ -26,7 +24,6 @@ class Solver {
 
     this.genetic.seed = this.seed.bind(this);
 
-    const fitness = new TeamFitness(data, draftInfo);
     this.genetic.fitness = fitness.fitness.bind(fitness);
     this.genetic.crossover = this.crossover.bind(this);
   }

@@ -29,24 +29,22 @@ async function runSolver() {
   };
 
   const suggestedPicks = $('#suggested-picks');
-  suggestedPicks.text('');
-  $('#calculating').toggle();
-  suggestedPicks.toggle();
+  suggestedPicks.text('Searching...');
+  $('#calculating').show();
 
-  if (cache.worker)
-    cache.worker.terminate();
-  cache.worker = new Worker('js/worker.js');
+  if (cache.teamPicks)
+    cache.teamPicks.terminate();
+  cache.teamPicks = new Worker('js/worker.js');
 
-  cache.worker.onmessage = function(e) {
-    $('#calculating').hide();
-    suggestedPicks.show();
+  cache.teamPicks.onmessage = function(e) {
     const result = e.data.result;
-    const message = !e.data.isFinished ? ' - Refining' : '';
+    if (e.data.isFinished)
+      $('#calculating').hide();
     const team = _.difference(result.team, ourTeam);
-    suggestedPicks.text(`${team.join(', ')} (score: ${result.fitness.toFixed(2)}${message})`);        
+    suggestedPicks.text(`${team.join(', ')} (score: ${result.fitness.toFixed(2)})`);        
   }
 
-  cache.worker.postMessage([window.stats.rawData, draftInfo]);
+  cache.teamPicks.postMessage([window.stats.rawData, draftInfo]);
 }
 
 function itemAdd(select, hero) {

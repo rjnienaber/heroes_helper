@@ -2,8 +2,8 @@ const acceptableCompositions = [
   ['Assassin', 'Specialist', 'Support', 'Warrior', 'Warrior'],
   ['Assassin', 'Assassin', 'Specialist', 'Support', 'Warrior'],
   ['Assassin', 'Assassin', 'Support', 'Warrior', 'Warrior'],
-  ['Assassin', 'Assassin', 'Assassin', 'Support', 'Warrior'],
-  ['Assassin', 'Assassin', 'Support', 'Support', 'Warrior']
+  ['Assassin', 'Assassin', 'Assassin', 'Support', 'Warrior']
+  // ['Assassin', 'Assassin', 'Support', 'Support', 'Warrior']
 ];
 
 const grubbyTiers = {

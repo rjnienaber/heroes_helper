@@ -216,7 +216,6 @@ class Solver {
     const config = {
       maxResults: 1,
       iterations: 40,
-      webWorkers: false,
     };
 
     return new Promise((resolve, reject) => {

@@ -70,6 +70,8 @@ function initializeHeroSelect(selector, heroes, maxItems) {
     valueField: 'hero',
     options: heroes,
     create: false,
+    closeAfterSelect: true,
+    openOnFocus: false,
     // openOnFocus: false,
     onItemAdd: (value) => itemAdd(select[0], value),
     onItemRemove: (value) => itemRemove(select[0], value)

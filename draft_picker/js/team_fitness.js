@@ -35,15 +35,15 @@ function precalculate(data, draftInfo) {
   let minWinPercent = 100;
   let maxWinPercent = 0;
 
-  Object.keys(data).forEach((hero) => {
+  for (const hero in data) {
     const d = data[hero];
     minWinPercent = Math.min(minWinPercent, d.win_percent);
-    maxWinPercent = Math.max(maxWinPercent, d.win_percent);    
-  });
+    maxWinPercent = Math.max(maxWinPercent, d.win_percent);        
+  }
 
   const winMultiplier = maxWinPercent - minWinPercent;
 
-  Object.keys(data).forEach((hero) => {
+  for (const hero in data) {
     const d = data[hero];
     const tiers = grubbyTiers[d.grubby_tier] + icyVeinsTiers[d.icy_veins_tier] + tenTonTiers[d.ten_ton_tier]
     let map = 0;
@@ -58,7 +58,7 @@ function precalculate(data, draftInfo) {
       win_percent: ((d.win_percent - minWinPercent) / winMultiplier) * 100,
       map
     }
-  });
+  };
 
   // console.log(newData)
   return newData;
@@ -99,7 +99,4 @@ class TeamFitness {
   }
 }
 
-module.exports = {
-  TeamFitness: TeamFitness,
-  acceptableCompositions: acceptableCompositions
-};
+module.exports = TeamFitness;

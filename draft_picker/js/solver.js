@@ -15,7 +15,12 @@ class Solver {
     ];
 
     const unusable = unavailable.reduce((sum, v) => sum.concat(v), []);
-    this.heroes = Object.keys(this.data).filter(k => !unusable.includes(k));
+    this.heroes = [];
+    for (const hero in this.data) {
+      if (!unusable.includes(hero)) {
+        this.heroes.push(hero);
+      }
+    }
 
     this.genetic = Genetic.create();
     this.genetic.optimize = Genetic.Optimize.Maximize;
@@ -31,7 +36,7 @@ class Solver {
   solve() {
     const config = {
       maxResults: 1,
-      iterations: 40
+      iterations: 40,
     };
 
     return new Promise((resolve, reject) => {
@@ -124,6 +129,4 @@ class Solver {
   }
 }
 
-module.exports = {
-  Solver: Solver,
-};
+module.exports = Solver;

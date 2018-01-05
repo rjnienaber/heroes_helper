@@ -7,3 +7,4 @@ TODO
 ## team composition for map using sub roles
 # add a fitness function just for bans
 # add settings to tweak fitness functions  
+# sort team by roles and then name

@@ -18,6 +18,7 @@ async function runSolver() {
     return;
 
   const blueTeam = $('#select-blue-team')[0].selectize.items;
+  const redTeam = $('#select-red-team')[0].selectize.items;
 
   // rename to blue team
   const draftInfo = {
@@ -25,27 +26,43 @@ async function runSolver() {
     unavailable: $('#select-exclude')[0].selectize.items,
     blueTeam,
     blueTeamBans: $('#select-blue-bans')[0].selectize.items,
-    redTeam: $('#select-red-team')[0].selectize.items,
+    redTeam,
     redTeamBans: $('#select-red-bans')[0].selectize.items
   };
 
   const suggestedPicks = $('#suggested-picks');
   suggestedPicks.text('Searching...');
-  $('#calculating').show();
+  $('#calculating-team').show();
 
-  if (cache.teamPicks)
-    cache.teamPicks.terminate();
-  cache.teamPicks = new Worker('js/worker.js');
+  const suggestedBans = $('#suggested-bans');
+  suggestedBans.text('Searching...');
+  $('#calculating-bans').show();
 
-  cache.teamPicks.onmessage = function(e) {
-    const result = e.data.result;
-    if (e.data.isFinished)
-      $('#calculating').hide();
-    const team = _.difference(result.team, blueTeam);
-    suggestedPicks.text(`${team.join(', ')} (score: ${result.fitness.toFixed(2)})`);        
+  if (cache.worker)
+    cache.worker.terminate();
+  cache.worker = new Worker('js/worker.js');
+
+  cache.worker.onmessage = function(e) {
+    const {result, isFinished, forBlueTeam} = e.data;
+    if (forBlueTeam) {
+      if (isFinished)
+        $('#calculating-team').hide();
+      const team = _.difference(result.team, blueTeam);
+      suggestedPicks.text(`${team.join(', ')} (score: ${result.fitness.toFixed(2)})`);
+    } else {
+      if (isFinished)
+        $('#calculating-bans').hide();
+
+      const team = _.difference(result.team, redTeam);
+      suggestedBans.text(`${team.join(', ')} (score: ${result.fitness.toFixed(2)})`);
+    }    
   }
 
-  cache.teamPicks.postMessage([window.stats.rawData, draftInfo]);
+  cache.worker.onerror = function (e) {
+    alert('ERROR: Line ' + e.lineno + ' in ' + e.filename + ': ' + e.message)
+  }
+
+  cache.worker.postMessage([window.stats.rawData, draftInfo]);
 }
 
 function itemAdd(select, hero) {

@@ -42,7 +42,7 @@ async function runSolver() {
     cache.worker.terminate();
   cache.worker = new Worker('js/worker.js');
 
-  cache.worker.onmessage = function(e) {
+  cache.worker.onmessage = (e) => {
     const {result, isFinished, forBlueTeam} = e.data;
     if (forBlueTeam) {
       if (isFinished)
@@ -58,7 +58,7 @@ async function runSolver() {
     }    
   }
 
-  cache.worker.onerror = function (e) {
+  cache.worker.onerror = (e) => {
     alert('ERROR: Line ' + e.lineno + ' in ' + e.filename + ': ' + e.message)
   }
 

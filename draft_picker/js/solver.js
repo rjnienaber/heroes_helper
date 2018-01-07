@@ -45,41 +45,27 @@ function precalculate(data, draftInfo) {
 
   for (const hero in data) {
     const d = data[hero];
-    const tiers = grubbyTiers[d.grubby_tier] + icyVeinsTiers[d.icy_veins_tier] + tenTonTiers[d.ten_ton_tier]
+    let preCalculated = 0;
+    preCalculated = (grubbyTiers[d.grubby_tier] + icyVeinsTiers[d.icy_veins_tier] + tenTonTiers[d.ten_ton_tier]) / 3;
+    preCalculated += ((d.win_percent - minWinPercent) / winMultiplier) * 100;
+
     let map = 0;
     if (d.maps.strong.includes(draftInfo.map)) {
-      map += 50;
+      preCalculated += 50;
     } else if (d.maps.weak.includes(draftInfo.map)) {
-      map -=50;
+      preCalculated -=50;
     } 
 
     newData[hero] = {
-      tiers: tiers / 3,
-      win_percent: ((d.win_percent - minWinPercent) / winMultiplier) * 100,
-      map
+      preCalculated,
+      role: d.role,
+      synergies: d.synergies,
+      counters: d.counters
     }
   };
 
   return newData;
 }
-
-// var Solver = Solver || (function () {
-//   'use strict'
-
-
-
-//   return {
-//     'create': function () {
-//       return new Solver()
-//     },
-//   }
-// })()
-
-// // so we don't have to build to run in the browser
-// if (typeof module !== 'undefined') {
-//   module.exports = Solver
-// }
-
 
 class Solver {
   constructor(data, draftInfo, Genetic) {
@@ -122,30 +108,37 @@ class Solver {
       }
     };
 
-    genetic.fitness = (entity) => {
-      const composition = entity.map((e) => genetic.rawData[e].role).sort();
-      const hasAcceptableComposition = genetic.acceptableCompositions.some(c => composition.every((v, i) => v === c[i]))    
-      let score = hasAcceptableComposition ? 50 : -50;
+    genetic.isAcceptableComposition = (entity) => {
+      const composition = entity.map((e) => genetic.data[e].role).sort();
+      return genetic.acceptableCompositions.some(c => composition.every((v, i) => v === c[i]))    
+    }
 
-      score += entity.reduce((sum, e) => sum + genetic.data[e].tiers, 0) / 5;
-      score += entity.reduce((sum, e) => sum + genetic.data[e].win_percent, 0) / 5;
-      score += entity.reduce((sum, e) => sum + genetic.data[e].map, 0) / 5;
+    genetic.myCache = {}
+    genetic.fitness = (entity) => {
+      let score = genetic.myCache[entity.sort()] || 0;
+      if (score !== 0)
+        return score;
+
+      score += genetic.isAcceptableComposition(entity) ? 50 : -50;
+
+      score += entity.reduce((sum, e) => sum + genetic.data[e].preCalculated, 0) / 5;
 
       // calculate synergies
       const synergies = new Set();
-      entity.forEach(e => genetic.rawData[e].synergies.forEach(s => synergies.add(s)));
+      entity.forEach(e => genetic.data[e].synergies.forEach(s => synergies.add(s)));
       score += entity.reduce((sum, hero) => sum + (synergies.has(hero) ? 30 : 0), 0);
 
       // calculate opposing team counters
       const theirCounters = new Set();
-      entity.forEach(e => genetic.rawData[e].counters.forEach(s => theirCounters.add(s)));
+      entity.forEach(e => genetic.data[e].counters.forEach(s => theirCounters.add(s)));
       score += genetic.draftInfo.redTeam.reduce((sum, hero) => sum + (theirCounters.has(hero) ? -30 : 0), 0);
 
       // calculate our team counters to opposing team
-      const ourCounters = new Set();
-      genetic.draftInfo.redTeam.forEach(e => genetic.rawData[e].counters.forEach(s => ourCounters.add(s)));
+      const ourCounters = new Set();      
+      genetic.draftInfo.redTeam.forEach(e => genetic.data[e].counters.forEach(s => ourCounters.add(s)));
       score += entity.reduce((sum, hero) => sum + (ourCounters.has(hero) ? 30 : 0), 0);
 
+      genetic.myCache[entity.sort()] = score;
       return score;
     };
 
@@ -212,18 +205,20 @@ class Solver {
     this.genetic = genetic;
   }
 
-  solve() {
-    const config = {
+  solve(config) {
+    const defaultConfig = {
       maxResults: 1,
       iterations: 40,
     };
 
-    const data = this.genetic.rawData;
+    const conf = Object.assign({}, defaultConfig, config)
+
+    const data = this.genetic.data;
 
     return new Promise((resolve, reject) => {
       this.genetic.notification = (pop, generation, stats, isFinished) => {
         if (isFinished) {
-          const result = {
+            const result = {
             team: pop[0].entity.sort((a,b) => {
               const roleA = data[a].role;
               const roleB = data[b].role;
@@ -259,14 +254,16 @@ class Solver {
             fitness: pop[0].fitness,
             generation
           }
-
-          resolve(result);
+         resolve(result);
         }
       };
 
-      this.genetic.evolve(config, {});
+      this.genetic.evolve(conf, {});
     });
   }
 }
 
-// module.exports = Solver;
+// so we don't have to build to run in the browser
+if (typeof module !== 'undefined') {
+  module.exports = Solver
+}

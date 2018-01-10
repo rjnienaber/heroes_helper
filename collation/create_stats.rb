@@ -17,6 +17,7 @@ ten_ton_tiers = Sources::TenTonTiers.new(browser)
 grubby_tiers = Sources::GrubbyTiers.new(browser)
 icy_veins_tiers = Sources::IcyVeinsTiers.new(browser)
 win_percent_plugin = Sources::WinPercent.new(browser)
+map_compositions = Sources::MapCompositions.new(browser)
 
 heroes = (win_percent_plugin.heroes + 
           subroles.heroes + 
@@ -28,7 +29,7 @@ heroes = (win_percent_plugin.heroes +
 heroes = heroes.uniq.sort
 
 # collate sources
-stats = Hash[heroes.map do |hero|
+hero_stats = Hash[heroes.map do |hero|
   win_percent = win_percent_plugin[hero]
   gems_and_gold = prices[hero]
   role = roles[hero]
@@ -75,9 +76,11 @@ stats = Hash[heroes.map do |hero|
   [hero, all_stats]
 end]
 
+stats = {heros: hero_stats, map_stats: map_compositions.values}
+
 # output formats
 Formatters::Yaml.new('stats.yml').format(stats)
-Formatters::CSV.new('stats.csv').format(stats)
+Formatters::CSV.new('stats.csv').format(hero_stats)
 Formatters::Json.new('stats.json').format(stats)
 
 

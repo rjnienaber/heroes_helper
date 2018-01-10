@@ -1,6 +1,6 @@
 module Sources
   class Base
-    attr_reader :browser
+    attr_accessor :browser
     def initialize(browser)
       @browser = browser
     end

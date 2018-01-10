@@ -3,7 +3,7 @@ const acceptableCompositions = [
   ['Assassin', 'Assassin', 'Specialist', 'Support', 'Warrior'],
   ['Assassin', 'Assassin', 'Support', 'Warrior', 'Warrior'],
   ['Assassin', 'Assassin', 'Assassin', 'Support', 'Warrior']
-  // ['Assassin', 'Assassin', 'Support', 'Support', 'Warrior']
+  ['Assassin', 'Assassin', 'Support', 'Support', 'Warrior']
 ];
 
 const grubbyTiers = {
@@ -207,8 +207,10 @@ class Solver {
 
   solve(config) {
     const defaultConfig = {
+      size: 275,
+      crossover: 1.0,
       maxResults: 1,
-      iterations: 40,
+      iterations: 25,
     };
 
     const conf = Object.assign({}, defaultConfig, config)

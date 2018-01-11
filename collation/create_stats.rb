@@ -76,7 +76,7 @@ hero_stats = Hash[heroes.map do |hero|
   [hero, all_stats]
 end]
 
-stats = {heros: hero_stats, map_stats: map_compositions.values}
+stats = {heroes: hero_stats, map_stats: map_compositions.values}
 
 # output formats
 Formatters::Yaml.new('stats.yml').format(stats)

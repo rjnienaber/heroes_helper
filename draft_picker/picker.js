@@ -27,7 +27,7 @@ async function main() {
     const json = await readFile('../collation/stats.json');
     const data = JSON.parse(json.toString('utf-8'));
     const draftInfo = {
-      map: 'Warhead Junction',
+      map: 'Blackheart\'s Bay',
       unavailable: [],
       blueTeam: [],
       blueTeamBans: [],
@@ -36,7 +36,7 @@ async function main() {
     };
 
     const result = await runSolver(data, draftInfo, {}, 10);
-    const composition = result.team.map((e) => data[e].role);
+    const composition = result.team.map((e) => data.heroes[e].role);
     console.log(`${result.team.join(', ')} - ${composition.join(', ')} - fitness: ${result.fitness.toFixed(2)} (${result.generation})`);        
   } catch (err) {
     console.log(err);  

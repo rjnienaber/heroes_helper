@@ -1,11 +1,3 @@
-const acceptableCompositions = [
-  ['Assassin', 'Specialist', 'Support', 'Warrior', 'Warrior'],
-  ['Assassin', 'Assassin', 'Specialist', 'Support', 'Warrior'],
-  ['Assassin', 'Assassin', 'Support', 'Warrior', 'Warrior'],
-  ['Assassin', 'Assassin', 'Assassin', 'Support', 'Warrior']
-  ['Assassin', 'Assassin', 'Support', 'Support', 'Warrior']
-];
-
 const grubbyTiers = {
   'S Tier': 100, 
   'T1 Tier': 66, 
@@ -30,21 +22,29 @@ const tenTonTiers = {
   'B Tier': 16, 
 }
 
-function precalculate(data, draftInfo) {
+function precalculateCompositions(data, draftInfo) {
+  let mapStats = data.map_stats[draftInfo.map];
+  if (!mapStats)
+    mapStats = data.map_stats['All Maps'];
+
+  return mapStats.map((s) => s.roles.sort());
+}
+
+function precalculateHero(data, draftInfo) {
   const newData = {};
   let minWinPercent = 100;
   let maxWinPercent = 0;
 
-  for (const hero in data) {
-    const d = data[hero];
+  for (const hero in data.heroes) {
+    const d = data.heroes[hero];
     minWinPercent = Math.min(minWinPercent, d.win_percent);
     maxWinPercent = Math.max(maxWinPercent, d.win_percent);        
   }
 
   const winMultiplier = maxWinPercent - minWinPercent;
 
-  for (const hero in data) {
-    const d = data[hero];
+  for (const hero in data.heroes) {
+    const d = data.heroes[hero];
     let preCalculated = 0;
     preCalculated = (grubbyTiers[d.grubby_tier] + icyVeinsTiers[d.icy_veins_tier] + tenTonTiers[d.ten_ton_tier]) / 3;
     preCalculated += ((d.win_percent - minWinPercent) / winMultiplier) * 100;
@@ -59,6 +59,7 @@ function precalculate(data, draftInfo) {
     newData[hero] = {
       preCalculated,
       role: d.role,
+      subrole: d.subrole,
       synergies: d.synergies,
       counters: d.counters
     }
@@ -75,10 +76,9 @@ class Solver {
     genetic.select2 = Genetic.Select2.Tournament2;
 
     genetic.draftInfo = draftInfo;
-    genetic.rawData = data;
-    genetic.data = precalculate(data, draftInfo);
+    genetic.data = precalculateHero(data, draftInfo);
     genetic.TEAM_SIZE = 5;
-    genetic.acceptableCompositions = acceptableCompositions;
+    genetic.acceptableCompositions = precalculateCompositions(data, draftInfo);
 
     let unavailable = [
       draftInfo.unavailable,
@@ -90,7 +90,7 @@ class Solver {
 
     const unusable = unavailable.reduce((sum, v) => sum.concat(v), []);
     genetic.heroes = [];
-    for (const hero in data) {
+    for (const hero in data.heroes) {
       if (!unusable.includes(hero)) {
         genetic.heroes.push(hero);
       }
@@ -109,7 +109,7 @@ class Solver {
     };
 
     genetic.isAcceptableComposition = (entity) => {
-      const composition = entity.map((e) => genetic.data[e].role).sort();
+      const composition = entity.map((e) => genetic.data[e].subrole).sort();
       return genetic.acceptableCompositions.some(c => composition.every((v, i) => v === c[i]))    
     }
 
@@ -119,7 +119,7 @@ class Solver {
       if (score !== 0)
         return score;
 
-      score += genetic.isAcceptableComposition(entity) ? 50 : -50;
+      score += genetic.isAcceptableComposition(entity) ? 100 : 0;
 
       score += entity.reduce((sum, e) => sum + genetic.data[e].preCalculated, 0) / 5;
 

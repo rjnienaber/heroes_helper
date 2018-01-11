@@ -1,8 +1,9 @@
 function loadStats() {
   return new Promise((resolve) => {
     $.getJSON('stats.json', (data) => {
-      const heroes = Object.keys(data);
-      const maps = _.uniq(_.flatten(heroes.map((h) => data[h].maps.strong.concat(data[h].maps.average).concat(data[h].maps.weak)))).sort();
+      const hero_stats = data.heroes;
+      const heroes = Object.keys(hero_stats);
+      const maps = _.uniq(_.flatten(heroes.map((h) => hero_stats[h].maps.strong.concat(hero_stats[h].maps.average).concat(hero_stats[h].maps.weak)))).sort();
       resolve({
         heroes, maps,
         rawData: data

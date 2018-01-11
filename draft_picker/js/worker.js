@@ -24,6 +24,5 @@ onmessage = async (e) => {
 
   const banDraftInfo = JSON.parse(JSON.stringify(draftInfo));
   Object.assign(banDraftInfo, {redTeam: banDraftInfo.blueTeam, blueTeam: banDraftInfo.redTeam});
-  banDraftInfo.unavailable = ['Cho', 'Gall'];
   runSolver(false, data, banDraftInfo);
 }

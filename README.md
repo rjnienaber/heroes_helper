@@ -1,10 +1,6 @@
-# heroes_helper
+## heroes_helper
 App to help you pick heroes during the draft process
 
-TODO
-# team fitness function
-## team composition for map
-## team composition for map using sub roles
-# add a fitness function just for bans
-# add settings to tweak fitness functions  
-# sort team by roles and then name
+## TODO
+* add a fitness function just for bans
+* add settings to tweak fitness functions  

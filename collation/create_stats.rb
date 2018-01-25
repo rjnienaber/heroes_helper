@@ -12,6 +12,7 @@ maps = Sources::Maps.new(browser, icy_veins_builds)
 synergies_counters = Sources::SynergiesCounters.new(browser, icy_veins_builds)
 prices = Sources::Prices.new(browser)
 subroles = Sources::SubRoles.new(browser)
+p subroles.values
 roles = Sources::Roles.new(browser)
 ten_ton_tiers = Sources::TenTonTiers.new(browser)
 grubby_tiers = Sources::GrubbyTiers.new(browser)

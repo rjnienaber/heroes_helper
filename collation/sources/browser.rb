@@ -27,6 +27,13 @@ module Sources
       end
     end
 
+    def reset
+      @browser.quit
+      @browser = nil
+    rescue => e
+      p e
+    end
+
     def browser
       @browser ||= create_browser
     end

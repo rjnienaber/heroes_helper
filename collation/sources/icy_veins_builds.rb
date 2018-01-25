@@ -8,7 +8,18 @@ module Sources
     private 
 
     def get_builds
-      pages = hero_build_urls.map { |url, cache_name| browser.download_page(url, cache_name) }
+      pages = hero_build_urls.map do |url, cache_name| 
+        page = nil
+        while page.nil?
+          begin
+            page = browser.download_page(url, cache_name) 
+          rescue Net::ReadTimeout => e
+            p e
+            browser.reset
+          end
+        end
+        page
+      end
       Hash[pages.map do |page|
         title = page.css('.page_title').text.strip
         hero = /(.*) Build Guide/.match(title)[1]
@@ -16,7 +27,6 @@ module Sources
       end]
     end
 
-# https://www.icy-veins.com/heroes/blaze-build-guide
     BUILD_URLS = %w[
 https://www.icy-veins.com/heroes/abathur-build-guide
 https://www.icy-veins.com/heroes/alarak-build-guide
@@ -27,6 +37,7 @@ https://www.icy-veins.com/heroes/artanis-build-guide
 https://www.icy-veins.com/heroes/arthas-build-guide
 https://www.icy-veins.com/heroes/auriel-build-guide
 https://www.icy-veins.com/heroes/azmodan-build-guide
+https://www.icy-veins.com/heroes/blaze-build-guide
 https://www.icy-veins.com/heroes/brightwing-build-guide
 https://www.icy-veins.com/heroes/cassia-build-guide
 https://www.icy-veins.com/heroes/chen-build-guide

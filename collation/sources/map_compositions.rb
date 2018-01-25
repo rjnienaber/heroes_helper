@@ -36,10 +36,12 @@ module Sources
             win_percent.text.gsub('%','').to_f,
             roles[0..4].map { |r| r.text}
           ]
-        end
+        end.select { |v| v[2].any? { |r| ['Healer', 'Support'].include?(r) } } # must have healer/support
+
         total = values.reduce(0) { |sum, v| sum + v[0] }
         winning_compositions = values.select { |v| v[1] >= 50 && (v[0] / total.to_f) > 0.01 }
                                      .sort_by { |v| v[1] }.reverse
+        
 
         [
           map_name,

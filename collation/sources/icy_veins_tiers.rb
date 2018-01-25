@@ -31,6 +31,8 @@ module Sources
       values.delete('Varian (Tank)')
 
       values['Varian'] = 'Core Tier'
+      values['Blaze'] = 'Viable Tier' # absent, make the same as grubby
+
       values
     end
   end

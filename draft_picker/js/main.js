@@ -1,6 +1,7 @@
 function loadStats() {
   return new Promise((resolve) => {
     $.getJSON('stats.json', (data) => {
+      data.tiers = Tiers.all;
       const hero_stats = data.heroes;
       const heroes = Object.keys(hero_stats);
       const maps = _.uniq(_.flatten(heroes.map((h) => hero_stats[h].maps.strong.concat(hero_stats[h].maps.average).concat(hero_stats[h].maps.weak)))).sort();
@@ -49,13 +50,13 @@ async function runSolver() {
       if (isFinished)
         $('#calculating-team').hide();
       const team = _.difference(result.team, blueTeam);
-      suggestedPicks.text(`${team.join(', ')} (score: ${result.fitness.toFixed(2)})`);
+      displayTeam(suggestedPicks, team, result);
     } else {
       if (isFinished)
         $('#calculating-bans').hide();
 
       const team = _.difference(result.team, redTeam);
-      suggestedBans.text(`${team.join(', ')} (score: ${result.fitness.toFixed(2)})`);
+      displayTeam(suggestedBans, team, result);
     }    
   }
 
@@ -64,6 +65,19 @@ async function runSolver() {
   }
 
   cache.worker.postMessage([window.stats.rawData, draftInfo]);
+}
+
+function displayTeam(element, team, result) {
+  element.html('')
+  for (const t of team) {
+    const newButton = $('<button type="button" class="btn btn-info btn-xs">').append(t).click(() => addToExclude(t));
+    element.append(newButton).append(' ')
+  }
+  element.append(`<span>(score: ${result.fitness.toFixed(2)})</span>`)
+}
+
+function addToExclude(hero) {
+  $('#select-exclude')[0].selectize.addItem(hero);
 }
 
 function itemAdd(select, hero) {

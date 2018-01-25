@@ -3,6 +3,7 @@ const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const Genetic = require('@skymaker/genetic-js')
 const Solver = require('./js/solver');
+const Tiers = require('./js/tiers');
 
 async function runSolver(data, draftInfo, config, repeats) {
   const startTime = new Date();
@@ -24,10 +25,11 @@ async function runSolver(data, draftInfo, config, repeats) {
 
 async function main() {
   try {
-    const json = await readFile('../collation/stats.json');
+    const json = await readFile('stats.json');
     const data = JSON.parse(json.toString('utf-8'));
+    data.tiers = Tiers.all;
     const draftInfo = {
-      map: 'Blackheart\'s Bay',
+      map: 'Warhead Junction',
       unavailable: [],
       blueTeam: [],
       blueTeamBans: [],
@@ -38,6 +40,7 @@ async function main() {
     const result = await runSolver(data, draftInfo, {}, 10);
     const composition = result.team.map((e) => data.heroes[e].role);
     console.log(`${result.team.join(', ')} - ${composition.join(', ')} - fitness: ${result.fitness.toFixed(2)} (${result.generation})`);        
+
   } catch (err) {
     console.log(err);  
   }

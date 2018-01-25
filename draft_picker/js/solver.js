@@ -1,27 +1,3 @@
-const grubbyTiers = {
-  'S Tier': 100, 
-  'T1 Tier': 66, 
-  'T2 Tier': 33, 
-  'T3 Tier': 0
-}
-
-const icyVeinsTiers = {
-  'Prime Tier': 100,
-  'Core Tier': 66,
-  'Viable Tier': 33,
-  'Niche Tier': 33,
-  'Bottom Tier': 0
-}
-
-const tenTonTiers = {
-  'S+ Tier': 100,
-  'S Tier': 83, 
-  'A+ Tier': 66, 
-  'A Tier': 49, 
-  'B+ Tier': 32, 
-  'B Tier': 16, 
-}
-
 function precalculateCompositions(data, draftInfo) {
   let mapStats = data.map_stats[draftInfo.map];
   if (!mapStats)
@@ -42,11 +18,12 @@ function precalculateHero(data, draftInfo) {
   }
 
   const winMultiplier = maxWinPercent - minWinPercent;
+  const { grubby, icyVeins, tenTon } = data.tiers; 
 
   for (const hero in data.heroes) {
     const d = data.heroes[hero];
     let preCalculated = 0;
-    preCalculated = (grubbyTiers[d.grubby_tier] + icyVeinsTiers[d.icy_veins_tier] + tenTonTiers[d.ten_ton_tier]) / 3;
+    preCalculated = (grubby[d.grubby_tier] + icyVeins[d.icy_veins_tier] + tenTon[d.ten_ton_tier]) / 3;
     preCalculated += ((d.win_percent - minWinPercent) / winMultiplier) * 100;
 
     let map = 0;

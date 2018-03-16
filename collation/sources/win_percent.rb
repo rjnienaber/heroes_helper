@@ -7,10 +7,11 @@ module Sources
     private
 
     def get_win_percent
-      page = browser.download_page('https://www.hotslogs.com/Sitewide/TeamDraft', 'win_percent')
-      heroes = page.css('#AvailableHeroes li')
-      Hash[heroes.map do |e|
-        [e.attr('data-hero'), e.css('p.p').first.children.first.text]
+      page = browser.download_page('https://apiapp.hotslogs.com/API/ReplayCharacterResults/-1,-1,-1/-1', 'win_percent')
+      page_json = JSON.parse(page.content)
+      
+      Hash[page_json['PotentialReplayCharacterQueryResultEntries'].map do |e|
+        [e['Character'], (e['WinPercent'] * 100).round(1)]
       end]
     end
   end

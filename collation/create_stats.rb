@@ -6,13 +6,13 @@ require 'csv'
 require 'yaml'
 require 'json'
 
+
 browser = Sources::Browser.new('./cache')
 icy_veins_builds = Sources::IcyVeinsBuilds.new(browser)
 maps = Sources::Maps.new(browser, icy_veins_builds)
 synergies_counters = Sources::SynergiesCounters.new(browser, icy_veins_builds)
 prices = Sources::Prices.new(browser)
 subroles = Sources::SubRoles.new(browser)
-p subroles.values
 roles = Sources::Roles.new(browser)
 ten_ton_tiers = Sources::TenTonTiers.new(browser)
 grubby_tiers = Sources::GrubbyTiers.new(browser)
@@ -68,10 +68,8 @@ hero_stats = Hash[heroes.map do |hero|
     grubby_tier: grubby_tier,
     icy_veins_tier: icy_veins_tier,
     ten_ton_tier: ten_ton_tier,
-    difficulty: difficulty,
     gems: gems,
     gold: gold,
-    description: description,
   }.merge(hero_synergies_counters).merge(maps: map_performance)
 
   [hero, all_stats]

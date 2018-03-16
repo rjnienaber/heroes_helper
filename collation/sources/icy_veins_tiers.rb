@@ -7,7 +7,7 @@ module Sources
     private
 
     def get_tiers
-      page = browser.download_page('https://www.icy-veins.com/forums/topic/35069-hanzo-meta-tier-list-december-2017/', 'icy_veins_tiers')
+      page = browser.download_page('https://www.icy-veins.com/forums/topic/35519-blaze-meta-tier-list-january-2018/', 'icy_veins_tiers')
       heroes_list = page.css('p + table')
       # binding.pry
       values = Hash[heroes_list.map do |heroes|
@@ -31,7 +31,7 @@ module Sources
       values.delete('Varian (Tank)')
 
       values['Varian'] = 'Core Tier'
-      values['Blaze'] = 'Viable Tier' # absent, make the same as grubby
+      values['Maiev'] = 'Prime Tier' # absent, make the same as grubby
 
       values
     end

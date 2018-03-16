@@ -8,18 +8,22 @@ module Sources
 
     def get_tiers
       page = browser.download_page('http://www.tentonhammer.com/articles/heroes-of-the-storm-tier-list', 'ten_ton_tiers')
-      tables = page.css('div.field-type-text-with-summary table')[1..-1]
-      values = Hash[tables.map do |table|
-        next unless table.text && table.text.include?('Tier')
-        next if table.text.include?('C Tier')
+      rows = page.css('div.field-type-text-with-summary > table:nth-child(33) tr')
 
-        tier = table.css('th:nth-child(1)').first.text.strip
-        rows = table.css('tbody tr')
-        rows.map do |row|
-          hero, _, _, difficulty, description = row.css('td').map { |td| td.text }
-          [hero, [tier, difficulty, description.strip]]
+      current_tier = nil
+      values = Hash[rows.map do |row|
+        row_text = row.text.strip
+        # binding.pry if current_tier.nil?
+        if row_text.end_with?('Tier')
+          current_tier = row_text.gsub(" ", ' ')
+          next
         end
-      end.flatten(1).compact]
+
+        # find hero
+        hero = row.css('strong a').text
+        
+        [hero, current_tier]
+      end.compact]
 
       # clean up
       cho_gall_key = 'Cho\'gall';
@@ -29,9 +33,8 @@ module Sources
       
       values['E.T.C.'] = values.delete('E.T.C')
       values['Lúcio'] = values.delete('Lucio')
-      values['Medivh'] = values.delete('Medivh*')
-      values['The Lost Vikings'] = values.delete('T.L.V*')
-      values['The Butcher'] = values.delete('The Butcher*')
+      values['Gul\'dan'] = values.delete('Guldan')
+      values['Maiev'] = values.delete('Maeve')
 
       values
     end

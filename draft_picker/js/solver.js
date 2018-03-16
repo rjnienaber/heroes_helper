@@ -24,14 +24,19 @@ function precalculateHero(data, draftInfo) {
     const d = data.heroes[hero];
     let preCalculated = 0;
     preCalculated = (grubby[d.grubby_tier] + icyVeins[d.icy_veins_tier] + tenTon[d.ten_ton_tier]) / 3;
+
     preCalculated += ((d.win_percent - minWinPercent) / winMultiplier) * 100;
 
-    let map = 0;
     if (d.maps.strong.includes(draftInfo.map)) {
       preCalculated += 50;
     } else if (d.maps.weak.includes(draftInfo.map)) {
       preCalculated -=50;
     } 
+
+    if (Number.isNaN(preCalculated)) {
+      console.log(preCalculated)
+      process.exit(1)
+    }
 
     newData[hero] = {
       preCalculated,

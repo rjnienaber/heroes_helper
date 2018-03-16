@@ -1,0 +1,43 @@
+function calculateSynergies(hero, heroInfo, blueTeam) {
+  return blueTeam.filter((h) => {
+  	if (h === hero)
+	  	return false;
+	  return heroInfo.synergies.includes(h)
+  });
+}
+
+function calculateCounters(hero, data, redTeam) {
+	return redTeam.filter((h) => {
+		const counters = data.heroes[h].counters;
+		return counters.includes(hero)
+	});
+}
+
+class Explainer {
+  constructor(data, draftInfo) {
+    this.data = data;
+    this.draftInfo = draftInfo;
+  }
+
+  explainHero(hero) {
+    const heroInfo = this.data.heroes[hero]
+    const grubbyTier = Object.keys(this.data.tiers.grubby).slice(0, 2).includes(heroInfo.grubby_tier);
+    const icyVeinsTier = Object.keys(this.data.tiers.icyVeins).slice(0, 2).includes(heroInfo.icy_veins_tier);
+    const tenTonTier = Object.keys(this.data.tiers.tenTon).slice(0, 2).includes(heroInfo.ten_ton_tier);
+
+    return {
+		  over50WinPercent: heroInfo.win_percent > 50,
+		  strongMap: heroInfo.maps.strong.includes(this.draftInfo.map),
+		  synergies: calculateSynergies(hero, heroInfo, this.draftInfo.blueTeam),
+		  counters: calculateCounters(hero, this.data, this.draftInfo.redTeam),
+		  topTwoGrubbyTiers: grubbyTier,
+		  topTwoTenTonTiers: icyVeinsTier,
+		  topTwoIcyVeinsTiers: tenTonTier,
+    }
+  }
+}
+
+// so we don't have to build to run in the browser
+if (typeof module !== 'undefined') {
+  module.exports = Explainer
+}

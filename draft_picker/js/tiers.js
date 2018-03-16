@@ -14,12 +14,11 @@ const icyVeinsTiers = {
 }
 
 const tenTonTiers = {
-  'S+ Tier': 100,
-  'S Tier': 83, 
-  'A+ Tier': 66, 
-  'A Tier': 49, 
-  'B+ Tier': 32, 
-  'B Tier': 16, 
+  'S Tier': 100, 
+  'A+ Tier': 75, 
+  'A Tier': 50, 
+  'B Tier': 25, 
+  'C Tier': 0, 
 }
 
 class Tiers {

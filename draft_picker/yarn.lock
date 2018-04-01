@@ -5,3 +5,7 @@
 "@skymaker/genetic-js@^0.1.15":
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/@skymaker/genetic-js/-/genetic-js-0.1.15.tgz#d0f4b966912e8afc4e540c2454b08ca1d366633e"
+
+github-fork-ribbon-css@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/github-fork-ribbon-css/-/github-fork-ribbon-css-0.2.1.tgz#7b41c2d3109c0225eae363132ddbb127b6186ea2"

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@skymaker/genetic-js": "^0.1.15"
+    "@skymaker/genetic-js": "^0.1.15",
+    "github-fork-ribbon-css": "^0.2.1"
   }
 }

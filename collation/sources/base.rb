@@ -32,16 +32,27 @@ module Sources
     end
 
     def values
-      @values ||= begin
-        values = retrieve_values
-        NAME_MAPPINGS.each do |wrong_names, name|
-          wrong_names.each do |wrong_name|
-            next unless values[wrong_name]
-            values[name] = values.delete(wrong_name)
-          end
+      @values ||= normalize_values(retrieve_values)
+    end
+
+    private
+
+    def normalize_values(raw_values)
+      NAME_MAPPINGS.each do |wrong_names, name|
+        wrong_names.each do |wrong_name|
+          next unless raw_values[wrong_name]
+          raw_values[name] = raw_values.delete(wrong_name)
         end
-        values
       end
+
+      raw_values.keys.each do |hero|
+        value = raw_values[hero]
+        next unless value.is_a?(String)
+        raw_values[hero] = value.gsub(' ', ' ')
+
+      end
+
+      raw_values
     end
   end
 end

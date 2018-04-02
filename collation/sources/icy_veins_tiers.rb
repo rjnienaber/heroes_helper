@@ -28,7 +28,7 @@ module Sources
       values.delete('Varian (Twin Blades of Fury)')
       values['Varian'] = 'Core Tier'
       
-      values['Fenix'] = 'Core  Tier' # hard coded to ten ton tiers as missing
+      values['Fenix'] = 'Core Tier' # hard coded to ten ton tiers as missing
 
       values
     end

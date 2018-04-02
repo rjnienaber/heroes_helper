@@ -28,26 +28,25 @@ heroes = (win_percent_plugin.heroes +
           icy_veins_tiers.heroes + 
           icy_veins_builds.heroes)
 heroes = heroes.uniq.sort
-
 # collate sources
 hero_stats = Hash[heroes.map do |hero|
   win_percent = win_percent_plugin[hero]
   gems_and_gold = prices[hero]
   role = roles[hero]
   subrole = subroles[hero]
-  tier_and_difficulty = ten_ton_tiers[hero]
+  ten_ton_tier = ten_ton_tiers[hero]
   grubby_tier = grubby_tiers[hero]
   icy_veins_tier = icy_veins_tiers[hero]
   map_performance = maps[hero]
   hero_synergies_counters = synergies_counters[hero]
 
   # check all stats for the hero are there
-  unless win_percent && gems_and_gold && role && subrole && tier_and_difficulty && grubby_tier && icy_veins_tier && map_performance && hero_synergies_counters
+  unless win_percent && gems_and_gold && role && subrole && ten_ton_tier && grubby_tier && icy_veins_tier && map_performance && hero_synergies_counters
     puts "No win percent for #{hero}" unless win_percent
     puts "No gems and gold cost for #{hero}" unless gems_and_gold
     puts "No role for #{hero}" unless role
     puts "No subrole for #{hero}" unless subrole
-    puts "No tier and difficulty for #{hero}" unless tier_and_difficulty
+    puts "No Ten Ton tier for #{hero}" unless ten_ton_tier
     puts "No Grubby tier for #{hero}" unless grubby_tier
     puts "No Icy Veins tier for #{hero}" unless icy_veins_tier
     puts "No Icy Veins Synergies/Counters for #{hero}" unless hero_synergies_counters
@@ -60,7 +59,7 @@ hero_stats = Hash[heroes.map do |hero|
   puts "Unknown heroes in synergies/counters: #{unknown_heroes}" if unknown_heroes.length != 0
 
   gems, gold = gems_and_gold
-  ten_ton_tier, difficulty, description = tier_and_difficulty
+  ten_ton_tier, difficulty, description = ten_ton_tier
   all_stats = {
     win_percent: win_percent.to_f,
     role: role,

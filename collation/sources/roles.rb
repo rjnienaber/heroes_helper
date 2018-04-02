@@ -1,12 +1,8 @@
 module Sources
   class Roles < Base
-    def values
-      @roles ||= get_roles
-    end
-
     private
 
-    def get_roles
+    def retrieve_values
       page = browser.download_page('http://us.battle.net/heroes/en/heroes/#/', 'hero_role')
       match = /window.heroes = (.*);/.match(page.content)
       json = match[1]

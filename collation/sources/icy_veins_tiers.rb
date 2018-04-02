@@ -1,13 +1,10 @@
 module Sources
   class IcyVeinsTiers < Base
-    def values
-      @tiers ||= get_tiers
-    end
 
     private
 
-    def get_tiers
-      page = browser.download_page('https://www.icy-veins.com/forums/topic/35519-blaze-meta-tier-list-january-2018/', 'icy_veins_tiers')
+    def retrieve_values
+      page = browser.download_page('https://www.icy-veins.com/forums/topic/36433-medivh-sonya-rework-meta-tier-list-march-2018/', 'icy_veins_tiers')
       heroes_list = page.css('p + table')
       # binding.pry
       values = Hash[heroes_list.map do |heroes|
@@ -25,13 +22,13 @@ module Sources
       cho_gall = values.delete(cho_gall_key)
       values['Cho'] = cho_gall
       values['Gall'] = cho_gall
-
-      cho_gall_key = 'gall';
-      values.delete('Varian (Damage)')
-      values.delete('Varian (Tank)')
-
+      
+      values.delete('Varian (Taunt)')
+      values.delete('Varian (Colossus Smash)')
+      values.delete('Varian (Twin Blades of Fury)')
       values['Varian'] = 'Core Tier'
-      values['Maiev'] = 'Prime Tier' # absent, make the same as grubby
+      
+      values['Fenix'] = 'Core  Tier' # hard coded to ten ton tiers as missing
 
       values
     end

@@ -2,17 +2,13 @@ require 'watir'
 
 module Sources
   class MapCompositions < Base
-    def values
-      @map_compositions ||= get_map_compositions
-    end
-
     private
 
     def cache_dir
       "#{self.browser.cache_dir}/map_compositions"
     end
 
-    def get_map_compositions
+    def retrieve_values
       # go to team composition page
       content = browser.perform(cache_dir, 'all') do |b|
         b.goto('https://www.hotslogs.com/Sitewide/TeamCompositions')

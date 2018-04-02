@@ -1,12 +1,9 @@
 module Sources
   class SubRoles < Base
-    def values
-      @roles ||= get_roles
-    end
 
     private
 
-    def get_roles
+    def retrieve_values
       page = browser.download_page('https://www.hotslogs.com/Info/HeroSubRole', 'hero_subrole')
       tables = page.css('section.about table')
       Hash[tables.map do |table|

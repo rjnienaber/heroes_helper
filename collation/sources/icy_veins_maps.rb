@@ -7,13 +7,9 @@ module Sources
       @builds = builds
     end
 
-    def values
-      @maps ||= get_maps
-    end
-
     private
 
-    def get_maps
+    def retrieve_values
       Hash[builds.values.map do |hero, page|
         strong = page.css('.heroes_tldr_maps_stronger img').map { |img| img.attributes['alt'].value }
         average = page.css('.heroes_tldr_maps_average img').map { |img| img.attributes['alt'].value }

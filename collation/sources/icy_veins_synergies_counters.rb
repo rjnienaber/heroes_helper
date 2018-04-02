@@ -7,13 +7,9 @@ module Sources
       @builds = builds
     end
 
-    def values
-      @maps ||= get_maps
-    end
-
     private
 
-    def get_maps
+    def retrieve_values
       basic = Hash[builds.values.map do |hero, page|
         synergies = page.css('.heroes_tldr_matchups_works_well_with img').map { |img| img.attributes['title'] ? img.attributes['title'].value : nil }.compact
         counters = page.css('.heroes_tldr_matchups_countered_by img').map { |img| img.attributes['title'] ? img.attributes['title'].value : nil }.compact

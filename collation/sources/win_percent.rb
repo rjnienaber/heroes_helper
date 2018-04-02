@@ -1,12 +1,9 @@
 module Sources
   class WinPercent < Base
-    def values
-      @win_percent ||= get_win_percent
-    end
 
     private
 
-    def get_win_percent
+    def retrieve_values
       page = browser.download_page('https://apiapp.hotslogs.com/API/ReplayCharacterResults/-1,-1,-1/-1', 'win_percent')
       page_json = JSON.parse(page.content)
       

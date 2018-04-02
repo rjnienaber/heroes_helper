@@ -1,13 +1,9 @@
 module Sources
   class IcyVeinsBuilds < Base
 
-    def values
-      @builds ||= get_builds
-    end
-
     private 
 
-    def get_builds
+    def retrieve_values
       pages = hero_build_urls.map do |url, cache_name| 
         page = nil
         while page.nil?
@@ -48,6 +44,7 @@ https://www.icy-veins.com/heroes/diablo-build-guide
 https://www.icy-veins.com/heroes/dva-build-guide
 https://www.icy-veins.com/heroes/e-t-c-build-guide
 https://www.icy-veins.com/heroes/falstad-build-guide
+https://www.icy-veins.com/heroes/fenix-build-guide
 https://www.icy-veins.com/heroes/gall-build-guide
 https://www.icy-veins.com/heroes/garrosh-build-guide
 https://www.icy-veins.com/heroes/gazlowe-build-guide

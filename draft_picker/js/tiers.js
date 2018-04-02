@@ -10,11 +10,12 @@ const icyVeinsTiers = {
   'Core Tier': 66,
   'Viable Tier': 33,
   'Niche Tier': 33,
-  'Bottom Tier': 0
+  'Bottom Tier': 0,
+  'Lost Vikings Tier': 0
 }
 
 const tenTonTiers = {
-  'S Tier': 100, 
+  'S Tier *': 100, 
   'A+ Tier': 75, 
   'A Tier': 50, 
   'B Tier': 25, 

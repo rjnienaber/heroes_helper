@@ -81,20 +81,33 @@ class Solver {
     }
 
     genetic.seed = () => {
+      if (genetic.draftInfo.blueTeam.length >= 5)
+        return genetic.draftInfo.blueTeam;
+
+      let counter = 0;
       while (true) {
         const seed = genetic.draftInfo.blueTeam.slice(0);
+
         while (seed.length < 5) {
           seed.push(genetic.randomHero());
         }
 
-        if (new Set(seed).size === genetic.TEAM_SIZE)
-          return seed;
+        if (new Set(seed).size === genetic.TEAM_SIZE) {
+          counter += 1;
+          if (genetic.isGoodComposition(seed) || counter > 50)
+            return seed;
+        }
       }
     };
 
-    genetic.isAcceptableComposition = (entity) => {
+    genetic.isGoodComposition = (entity) => {
       const composition = entity.map((e) => genetic.data[e].subrole).sort();
       return genetic.acceptableCompositions.some(c => composition.every((v, i) => v === c[i]))    
+    }
+
+    genetic.isAcceptableComposition = (entity) => {
+      const roles = new Set(entity.map((e) => genetic.data[e].role));
+      return roles.has('Warrior') && roles.has('Assassin') && roles.has('Support')
     }
 
     genetic.myCache = {}
@@ -103,7 +116,10 @@ class Solver {
       if (score !== 0)
         return score;
 
-      score += genetic.isAcceptableComposition(entity) ? 100 : 0;
+      if (genetic.isGoodComposition(entity))
+        score += 100;
+      else if (genetic.isAcceptableComposition(entity))
+        score += 50;
 
       score += entity.reduce((sum, e) => sum + genetic.data[e].preCalculated, 0) / 5;
 

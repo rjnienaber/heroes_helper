@@ -29,13 +29,14 @@ async function main() {
     const json = await readFile('stats.json');
     const data = JSON.parse(json.toString('utf-8'));
     data.tiers = Tiers.all;
+
     const draftInfo = {
-      map: 'Braxis Holdout',
-      unavailable: ['Ana'],
-      blueTeam: [],
-      blueTeamBans: [],
-      redTeam: ['Arthas', 'Jaina', 'Maiev', 'Sylvanas', 'Malfurion'],
-      redTeamBans: []
+      map: 'Volskaya Foundry',
+      unavailable: [''],
+      redTeam: ['Malfurion', 'Genji', 'Chromie', 'Diablo', 'Johanna'],
+      redTeamBans: ['Stukov', 'Medivh'],
+      blueTeam: ['Hanzo', 'Garrosh', 'Zeratul', 'Thrall'],
+      blueTeamBans: ['Maiev', 'Tyrael']
     };
 
     const result = await runSolver(data, draftInfo, {}, 10);

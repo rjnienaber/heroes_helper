@@ -1,3 +1,5 @@
 collation/cache
 stats.*
 draft_picker/node_modules
+*.iml
+*.xml

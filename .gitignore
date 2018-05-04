@@ -3,3 +3,4 @@ stats.*
 draft_picker/node_modules
 *.iml
 *.xml
+dist/

@@ -1,10 +1,10 @@
 const fs = require('fs');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
-const Genetic = require('@skymaker/genetic-js')
-const Solver = require('./js/solver');
-const Tiers = require('./js/tiers');
-const Explainer = require('./js/explainer');
+const Genetic = require('@skymaker/genetic-js');
+const Solver = require('./src/solver');
+const Tiers = require('./src/tiers');
+const Explainer = require('./src/explainer');
 
 async function runSolver(data, draftInfo, config, repeats) {
   const startTime = new Date();

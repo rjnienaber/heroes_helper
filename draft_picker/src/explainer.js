@@ -37,7 +37,4 @@ class Explainer {
   }
 }
 
-// so we don't have to build to run in the browser
-if (typeof module !== 'undefined') {
-  module.exports = Explainer
-}
+module.exports = Explainer;

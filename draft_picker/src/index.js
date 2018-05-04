@@ -1,16 +1,21 @@
+import 'jquery'
+import 'selectize'
+import 'bootstrap'
+import _ from 'lodash';
+import Tiers from './tiers'
+import { default as data } from '../stats.json'
+import Worker from 'worker-loader!./worker.js';
+
 function loadStats() {
-  return new Promise((resolve) => {
-    $.getJSON('stats.json', (data) => {
-      data.tiers = Tiers.all;
-      const hero_stats = data.heroes;
-      const heroes = Object.keys(hero_stats);
-      const maps = _.uniq(_.flatten(heroes.map((h) => hero_stats[h].maps.strong.concat(hero_stats[h].maps.average).concat(hero_stats[h].maps.weak)))).sort();
-      resolve({
-        heroes, maps,
-        rawData: data
-      });
-    });
-  });
+  data.tiers = Tiers.all;
+  const hero_stats = data.heroes;
+  const heroes = Object.keys(hero_stats);
+  const maps = _.uniq(_.flatten(heroes.map((h) => hero_stats[h].maps.strong.concat(hero_stats[h].maps.average).concat(hero_stats[h].maps.weak)))).sort();
+
+  return {
+    heroes, maps,
+    rawData: data
+  };
 };
 
 let initializing = true;
@@ -42,7 +47,7 @@ async function runSolver() {
 
   if (cache.worker)
     cache.worker.terminate();
-  cache.worker = new Worker('js/worker.js');
+  cache.worker = new Worker();
 
   cache.worker.onmessage = (e) => {
     const {result, isFinished, forBlueTeam} = e.data;
@@ -110,7 +115,7 @@ function initializeHeroSelect(selector, heroes, maxItems) {
 
 // main function
 (async () => {
-  const stats = await loadStats();
+  const stats = loadStats();
   window.stats = stats;
   const heroes =  stats.heroes.map((hero) => ({hero}));
   const maps = stats.maps.map((map) => ({map}));

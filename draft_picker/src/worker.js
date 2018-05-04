@@ -1,3 +1,6 @@
+import Genetic from '@skymaker/genetic-js';
+import Solver from './solver'
+
 async function runSolver(forBlueTeam, data, draftInfo) {
   let bestResult;
   let lastChange = 0;
@@ -16,9 +19,6 @@ async function runSolver(forBlueTeam, data, draftInfo) {
 }
 
 onmessage = async (e) => {
-  self.importScripts('../node_modules/@skymaker/genetic-js/genetic-js.min.js');
-  self.importScripts('solver.js');
-
   const [data, draftInfo] = e.data;
   runSolver(true, data, draftInfo);
 

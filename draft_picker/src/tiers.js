@@ -32,7 +32,4 @@ class Tiers {
   }
 }
 
-// so we don't have to build to run in the browser
-if (typeof module !== 'undefined') {
-  module.exports = Tiers
-}
+module.exports = Tiers;

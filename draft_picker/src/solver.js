@@ -94,7 +94,7 @@ class Solver {
 
         if (new Set(seed).size === genetic.TEAM_SIZE) {
           counter += 1;
-          if (genetic.isGoodComposition(seed) || counter > 50)
+          if (genetic.isAcceptableComposition(seed) || counter > 50)
             return seed;
         }
       }
@@ -265,7 +265,4 @@ class Solver {
   }
 }
 
-// so we don't have to build to run in the browser
-if (typeof module !== 'undefined') {
-  module.exports = Solver
-}
+module.exports = Solver;

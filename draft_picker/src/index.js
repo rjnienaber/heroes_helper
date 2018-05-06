@@ -1,16 +1,16 @@
-import 'jquery'
-import 'selectize'
-import 'bootstrap'
-import _ from 'lodash';
-import Tiers from './tiers'
-import { default as data } from '../stats.json'
+import 'babel-polyfill';
+import difference from 'lodash/difference';
+import uniq from 'lodash/uniq';
+import flatten  from 'lodash/flatten';
+import Tiers from './tiers';
+import { default as data } from '../stats.json';
 import Worker from 'worker-loader!./worker.js';
 
 function loadStats() {
   data.tiers = Tiers.all;
   const hero_stats = data.heroes;
   const heroes = Object.keys(hero_stats);
-  const maps = _.uniq(_.flatten(heroes.map((h) => hero_stats[h].maps.strong.concat(hero_stats[h].maps.average).concat(hero_stats[h].maps.weak)))).sort();
+  const maps = uniq(flatten(heroes.map((h) => hero_stats[h].maps.strong.concat(hero_stats[h].maps.average).concat(hero_stats[h].maps.weak)))).sort();
 
   return {
     heroes, maps,
@@ -54,13 +54,13 @@ async function runSolver() {
     if (forBlueTeam) {
       if (isFinished)
         $('#calculating-team').hide();
-      const team = _.difference(result.team, blueTeam);
+      const team = difference(result.team, blueTeam);
       displayTeam(suggestedPicks, team, result);
     } else {
       if (isFinished)
         $('#calculating-bans').hide();
 
-      const team = _.difference(result.team, redTeam);
+      const team = difference(result.team, redTeam);
       displayTeam(suggestedBans, team, result);
     }    
   }

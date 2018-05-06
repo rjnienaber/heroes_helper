@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootswatch/united/bootstrap.min.css';
 import 'selectize/dist/css/selectize.bootstrap3.css'
 import '../vendor/gh-fork-ribbon.css'

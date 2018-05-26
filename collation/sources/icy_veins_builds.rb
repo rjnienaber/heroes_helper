@@ -39,6 +39,7 @@ https://www.icy-veins.com/heroes/cassia-build-guide
 https://www.icy-veins.com/heroes/chen-build-guide
 https://www.icy-veins.com/heroes/cho-build-guide
 https://www.icy-veins.com/heroes/chromie-build-guide
+https://www.icy-veins.com/heroes/deckard-build-guide
 https://www.icy-veins.com/heroes/dehaka-build-guide
 https://www.icy-veins.com/heroes/diablo-build-guide
 https://www.icy-veins.com/heroes/dva-build-guide

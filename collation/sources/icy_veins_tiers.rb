@@ -4,7 +4,7 @@ module Sources
     private
 
     def retrieve_values
-      page = browser.download_page('https://www.icy-veins.com/forums/topic/36433-medivh-sonya-rework-meta-tier-list-march-2018/', 'icy_veins_tiers')
+      page = browser.download_page('https://www.icy-veins.com/forums/topic/37470-deckard-meta-tier-list-may-2018/', 'icy_veins_tiers')
       heroes_list = page.css('p + table')
       # binding.pry
       values = Hash[heroes_list.map do |heroes|

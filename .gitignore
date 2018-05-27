@@ -4,3 +4,5 @@ draft_picker/node_modules
 *.iml
 *.xml
 dist/
+
+sync.sh

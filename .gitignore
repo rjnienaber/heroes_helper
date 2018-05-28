@@ -1,6 +1,5 @@
-collation/cache
-stats.*
-draft_picker/node_modules
+collation/
+draft_picker/
 *.iml
 *.xml
 dist/

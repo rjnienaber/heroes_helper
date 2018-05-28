@@ -6,6 +6,8 @@ require 'csv'
 require 'yaml'
 require 'json'
 
+`mkdir -p ./cache/icy_veins`
+`mkdir -p ./cache/map_compositions`
 
 browser = Sources::Browser.new('./cache')
 icy_veins_builds = Sources::IcyVeinsBuilds.new(browser)

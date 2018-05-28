@@ -1,10 +1,11 @@
-const fs = require('fs');
-const util = require('util');
+import fs from 'fs'
+import util from 'util'
+import Genetic from '@skymaker/genetic-js'
+import Solver from './src/solver/solver'
+import Tiers from './src/solver/tiers'
+import Explainer from './src/solver/explainer'
+
 const readFile = util.promisify(fs.readFile);
-const Genetic = require('@skymaker/genetic-js');
-const Solver = require('./src/solver');
-const Tiers = require('./src/tiers');
-const Explainer = require('./src/explainer');
 
 async function runSolver(data, draftInfo, config, repeats) {
   const startTime = new Date();

@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    stylesheets: './src/stylesheets.js',
+    stylesheets: './src/ui/css/stylesheets.js',
     app: './src/index.js'
   },
   devServer: {
@@ -50,6 +50,7 @@ module.exports = {
        },
        {
          test: /\.js$/,
+         exclude: /node_modules/,
          loader: 'babel-loader'
        }
      ]

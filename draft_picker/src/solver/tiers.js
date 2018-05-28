@@ -22,7 +22,7 @@ const tenTonTiers = {
   'C Tier': 0, 
 }
 
-class Tiers {
+export default class Tiers {
   static get all() {
     return {
       grubby: grubbyTiers,
@@ -31,5 +31,3 @@ class Tiers {
     }
   }
 }
-
-module.exports = Tiers;

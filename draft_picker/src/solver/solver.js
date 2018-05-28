@@ -52,7 +52,7 @@ function precalculateHero(data, draftInfo) {
   return newData;
 }
 
-class Solver {
+export default class Solver {
   constructor(data, draftInfo, Genetic) {
     const genetic = Genetic.create();
     genetic.optimize = Genetic.Optimize.Maximize;
@@ -264,5 +264,3 @@ class Solver {
     });
   }
 }
-
-module.exports = Solver;

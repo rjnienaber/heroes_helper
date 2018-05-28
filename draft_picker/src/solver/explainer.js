@@ -13,7 +13,7 @@ function calculateCounters(hero, data, redTeam) {
 	});
 }
 
-class Explainer {
+export default class Explainer {
   constructor(data, draftInfo) {
     this.data = data;
     this.draftInfo = draftInfo;
@@ -36,5 +36,3 @@ class Explainer {
     }
   }
 }
-
-module.exports = Explainer;

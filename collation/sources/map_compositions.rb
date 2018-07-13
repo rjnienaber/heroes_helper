@@ -53,6 +53,11 @@ module Sources
           b.goto('https://www.hotslogs.com/Sitewide/TeamCompositions')
         end
 
+        btn = b.button class: 'gdpr-accept'
+        if btn.exists?
+          btn.click
+        end
+
         # browser.goto('https://www.hotslogs.com/Sitewide/TeamCompositions')
         b.element(id: 'ctl00_MainContent_DropDownMapName').click
         sleep 2 # wait for dropdown

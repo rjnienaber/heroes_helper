@@ -2,6 +2,10 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
+const webpack = require('webpack')
+
+const gitRevisionPlugin = new GitRevisionPlugin()
 
 module.exports = {
   mode: 'production',
@@ -14,6 +18,9 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(gitRevisionPlugin.commithash())
+    }),
     new HtmlWebpackPlugin({
       inject: false,
       template: 'index.html'

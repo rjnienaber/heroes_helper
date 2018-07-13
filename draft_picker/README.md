@@ -9,4 +9,3 @@
 * https://github.com/methodswithclass/evolve
 
 * TODO *
-* add opposing team composition to fitness function

@@ -18,6 +18,7 @@ module Sources
       ['genji'] => 'Genji',
       ['guldan'] => 'Gul\'dan',
       ['zarya'] => 'Zarya',
+      ['YrelAvatar'] => 'Yrel'
     }
 
     attr_accessor :browser

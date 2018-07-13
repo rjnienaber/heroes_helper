@@ -5,7 +5,6 @@ module Sources
     def retrieve_values
       page = browser.download_page('http://www.tentonhammer.com/articles/heroes-of-the-storm-tier-list', 'ten_ton_tiers')
       elements = page.css('div.field-type-text-with-summary').children
-      current_tier = nil
       values = {}
 
       elements.each_with_index do |element, i|

@@ -4,7 +4,7 @@ module Sources
     private
 
     def retrieve_values
-      page = browser.download_page('https://www.icy-veins.com/forums/topic/37470-deckard-meta-tier-list-may-2018/', 'icy_veins_tiers')
+      page = browser.download_page('https://www.icy-veins.com/forums/topic/37969-yrel-meta-tier-list-june-2018/', 'icy_veins_tiers')
       heroes_list = page.css('p + table')
       # binding.pry
       values = Hash[heroes_list.map do |heroes|
@@ -27,9 +27,8 @@ module Sources
       values.delete('Varian (Colossus Smash)')
       values.delete('Varian (Twin Blades of Fury)')
       values['Varian'] = 'Core Tier'
-      
-      values['Fenix'] = 'Core Tier' # hard coded to ten ton tiers as missing
 
+      values['Sonya'] = 'Prime Tier'
       values
     end
   end

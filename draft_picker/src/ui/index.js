@@ -24,9 +24,9 @@ export default class UI {
     });
 
     this.initializeHeroSelect('#select-exclude', heroes);
-    this.initializeHeroSelect('#select-blue-bans', heroes, 2);
+    this.initializeHeroSelect('#select-blue-bans', heroes, 3);
     this.initializeHeroSelect('#select-blue-team', heroes, 5);
-    this.initializeHeroSelect('#select-red-bans', heroes, 2);
+    this.initializeHeroSelect('#select-red-bans', heroes, 3);
     this.initializeHeroSelect('#select-red-team', heroes, 5);
 
     $('#select-exclude')[0].selectize.setValue(['Cho', 'Gall']);

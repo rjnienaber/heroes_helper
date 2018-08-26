@@ -19,7 +19,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(gitRevisionPlugin.commithash())
+      VERSION: JSON.stringify(gitRevisionPlugin.commithash().substring(0, 7)),
+      BUILD_DATE: JSON.stringify(new Date())
     }),
     new HtmlWebpackPlugin({
       inject: false,

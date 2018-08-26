@@ -18,7 +18,7 @@ module Sources
 
     def perform(full_cache_dir, cache_name, &block)
       file_name = "#{full_cache_dir}/#{cache_name}.html"
-      content = if File.exist?(file_name)
+      if File.exist?(file_name)
         File.read(file_name)
       else
         content = block.call(browser)

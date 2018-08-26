@@ -6,11 +6,11 @@ const grubbyTiers = {
 }
 
 const icyVeinsTiers = {
-  'Prime Tier': 100,
-  'Core Tier': 66,
-  'Viable Tier': 33,
-  'Niche Tier': 33,
-  'Underplayed Tier': 0
+  'Meta picks': 100,
+  'High-tier generalists': 75,
+  'Mid-tier generalists': 50,
+  'Low-tier generalists': 25,
+  'Situational picks (map, team composition, or counterpick)': 0
 }
 
 const tenTonTiers = {

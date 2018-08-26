@@ -99,6 +99,7 @@ https://www.icy-veins.com/heroes/valeera-build-guide
 https://www.icy-veins.com/heroes/valla-build-guide
 https://www.icy-veins.com/heroes/varian-build-guide
 https://www.icy-veins.com/heroes/varian-build-guide
+https://www.icy-veins.com/heroes/whitemane-build-guide
 https://www.icy-veins.com/heroes/xul-build-guide
 https://www.icy-veins.com/heroes/yrel-build-guide
 https://www.icy-veins.com/heroes/zarya-build-guide

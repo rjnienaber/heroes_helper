@@ -211,6 +211,7 @@ export default class Solver {
       crossover: 1.0,
       maxResults: 1,
       iterations: 25,
+      webWorkers: false
     };
 
     const conf = Object.assign({}, defaultConfig, config)

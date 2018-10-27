@@ -1,5 +1,7 @@
 require 'csv'
 
+ALL_MAPS_ID = 1000
+
 module Sources
   module HotsLogsExport
     class Parser
@@ -37,6 +39,7 @@ module Sources
           end
         end
         puts "HotsLogsExport: Read hero and map ids"
+        map_lookup[ALL_MAPS_ID] = 'All Maps'
         [hero_lookup, map_lookup]
       end
 

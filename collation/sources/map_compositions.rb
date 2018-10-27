@@ -22,9 +22,7 @@ module Sources
     def retrieve_values
       file_name = "#{cache_dir}/parsed_map_compositions.json"
 
-      if File.exist?(file_name)
-        ::JSON.parse(File.read(file_name))
-      else
+      unless File.exist?(file_name)
         parser = HotsLogsExport::Parser.new(export_path)
         map_lookup, _, composition_stats = parser.parse
         grouped_composition_stats = composition_stats.values.group_by {|c| c.map_id}
@@ -39,9 +37,9 @@ module Sources
 
         formatter = Formatters::Json.new(file_name)
         formatter.format(map_values)
-
-        map_values
       end
+
+      ::JSON.parse(File.read(file_name))
     end
   end
 end

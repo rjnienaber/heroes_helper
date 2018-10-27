@@ -49,7 +49,7 @@ function precalculateHero(data, draftInfo) {
       role: d.role,
       subrole: d.subrole,
       synergies: d.synergies,
-      counters: d.counters
+      countered_by: d.countered_by
     }
   };
 
@@ -134,12 +134,12 @@ export default class Solver {
 
       // calculate opposing team counters
       const theirCounters = new Set();
-      entity.forEach(e => genetic.data[e].counters.forEach(s => theirCounters.add(s)));
+      entity.forEach(e => genetic.data[e].countered_by.forEach(s => theirCounters.add(s)));
       score += genetic.draftInfo.redTeam.reduce((sum, hero) => sum + (theirCounters.has(hero) ? -30 : 0), 0);
 
       // calculate our team counters to opposing team
       const ourCounters = new Set();      
-      genetic.draftInfo.redTeam.forEach(e => genetic.data[e].counters.forEach(s => ourCounters.add(s)));
+      genetic.draftInfo.redTeam.forEach(e => genetic.data[e].countered_by.forEach(s => ourCounters.add(s)));
       score += entity.reduce((sum, hero) => sum + (ourCounters.has(hero) ? 30 : 0), 0);
 
       genetic.myCache[entity.sort()] = score;

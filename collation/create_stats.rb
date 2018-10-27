@@ -57,7 +57,7 @@ hero_stats = Hash[heroes.map do |hero|
   end
 
   # check counter/synergy heros
-  unknown_heroes = (hero_synergies_counters[:counters] + hero_synergies_counters[:synergies]) - heroes
+  unknown_heroes = (hero_synergies_counters[:countered_by] + hero_synergies_counters[:synergies]) - heroes
   puts "Unknown heroes in synergies/counters: #{unknown_heroes}" if unknown_heroes.length != 0
 
   gems, gold = gems_and_gold

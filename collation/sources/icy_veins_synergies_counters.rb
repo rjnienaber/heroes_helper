@@ -13,7 +13,7 @@ module Sources
       basic = Hash[builds.values.map do |hero, page|
         synergies = page.css('.heroes_synergies a img').map { |img| img.attributes['title'] ? img.attributes['title'].value : nil }.compact
         counters = page.css('.heroes_counters a img').map { |img| img.attributes['title'] ? img.attributes['title'].value : nil }.compact
-        [hero, {synergies: synergies, counters: counters}]
+        [hero, {synergies: synergies, countered_by: counters}]
       end]
 
       # some hero synergies are not mutually listed so we run over each hero
@@ -21,9 +21,7 @@ module Sources
       basic.keys.each do |hero|
         heroes = basic.keys
         synergies = heroes.select { |h| basic[h][:synergies].include?(hero)}
-        counters = heroes.select { |h| basic[h][:counters].include?(hero)}
         basic[hero][:synergies] = (basic[hero][:synergies] + synergies).uniq
-        basic[hero][:counters] = (basic[hero][:counters] + counters).uniq
       end
       basic
     end

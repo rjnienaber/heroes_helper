@@ -33,7 +33,9 @@ module Sources
         if winning_heroes.length == 5 && losing_heroes.length == 5
           # do map composition
           find_composition_stat(current_replay[:map_id], winning_heroes).increment(true)
+          find_composition_stat(ALL_MAPS_ID, winning_heroes).increment(true)
           find_composition_stat(current_replay[:map_id], losing_heroes).increment(false)
+          find_composition_stat(ALL_MAPS_ID, losing_heroes).increment(false)
 
           reset
         end

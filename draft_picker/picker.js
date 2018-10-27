@@ -44,26 +44,26 @@ async function main() {
     const composition = result.team.map((e) => data.heroes[e].role);
     console.log(`${result.team.join(', ')} - ${composition.join(', ')} - fitness: ${result.fitness.toFixed(2)} (${result.generation})`);        
 
-    console.log('Composition Explained:')
+    console.log('Composition Explained:');
     draftInfo.blueTeam = result.team;
-    const explainer = new Explainer(data, draftInfo)
+    const explainer = new Explainer(data, draftInfo);
     for (const hero of result.team) {
       const explained = explainer.explainHero(hero);
-      console.log(`Hero: ${hero}`)
+      console.log(`Hero: ${hero}`);
       if (explained.over50WinPercent)
-        console.log('  Over 50 percent win rate')
+        console.log('  Over 50 percent win rate');
       if (explained.strongMap)
-        console.log(`  Strong on ${draftInfo.map}`)
+        console.log(`  Strong on ${draftInfo.map}`);
       if (explained.synergies.length > 0)
-        console.log(`  Synergies: ${explained.synergies.join(', ')}`)
+        console.log(`  Synergies: ${explained.synergies.join(', ')}`);
       if (explained.counters.length > 0)
-        console.log(`  Counters: ${explained.counters.join(', ')}`)
+        console.log(`  Counters: ${explained.counters.join(', ')}`);
       if (explained.topTwoGrubbyTiers)
-        console.log(`  Appears in top two Grubby Tier`)
+        console.log(`  Appears in top two Grubby Tier`);
       if (explained.topTwoTenTonTiers)
-        console.log(`  Appears in top two Ten Ton Tier`)
+        console.log(`  Appears in top two Ten Ton Tier`);
       if (explained.topTwoIcyVeinsTiers)
-        console.log(`  Appears in top two Icy Veins Tier`)
+        console.log(`  Appears in top two Icy Veins Tier`);
     }
 
   } catch (err) {

@@ -7,10 +7,7 @@ function calculateSynergies(hero, heroInfo, blueTeam) {
 }
 
 function calculateCounters(hero, data, redTeam) {
-	return redTeam.filter((h) => {
-		const counters = data.heroes[h].counters;
-		return counters.includes(hero)
-	});
+	return redTeam.filter((h) => data.heroes[h].countered_by.includes(hero));
 }
 
 export default class Explainer {
@@ -20,7 +17,7 @@ export default class Explainer {
   }
 
   explainHero(hero) {
-    const heroInfo = this.data.heroes[hero]
+    const heroInfo = this.data.heroes[hero];
     const grubbyTier = Object.keys(this.data.tiers.grubby).slice(0, 2).includes(heroInfo.grubby_tier);
     const icyVeinsTier = Object.keys(this.data.tiers.icyVeins).slice(0, 2).includes(heroInfo.icy_veins_tier);
     const tenTonTier = Object.keys(this.data.tiers.tenTon).slice(0, 2).includes(heroInfo.ten_ton_tier);
@@ -29,7 +26,7 @@ export default class Explainer {
 		  over50WinPercent: heroInfo.win_percent > 50,
 		  strongMap: heroInfo.maps.strong.includes(this.draftInfo.map),
 		  synergies: calculateSynergies(hero, heroInfo, this.draftInfo.blueTeam),
-		  counters: calculateCounters(hero, this.data, this.draftInfo.redTeam),
+      counters: calculateCounters(hero, this.data, this.draftInfo.redTeam),
 		  topTwoGrubbyTiers: grubbyTier,
 		  topTwoTenTonTiers: icyVeinsTier,
 		  topTwoIcyVeinsTiers: tenTonTier,

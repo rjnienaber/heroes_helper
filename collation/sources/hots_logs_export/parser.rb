@@ -72,7 +72,7 @@ module Sources
       end
 
       def read_replay_heroes(replay_processor)
-        puts "HotsLogsExport: Reading replay heroes..."
+        puts "HotsLogsExport: Reading each hero stat in the replay..."
 
         read_file(replay_characters_path) do |replay_character_row|
           replay_id, _, hero_id, _, is_winner = replay_character_row

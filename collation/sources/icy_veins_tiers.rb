@@ -18,7 +18,7 @@ module Sources
       end.flatten(1)]
 
       # clean up
-      cho_gall_key = 'gall'
+      cho_gall_key = 'gall';
       cho_gall = values.delete(cho_gall_key)
       values['Cho'] = cho_gall
       values['Gall'] = cho_gall
@@ -28,6 +28,8 @@ module Sources
         values[key] = 'Situational picks (map, team composition, or counterpick)'
       end
 
+
+      values['Mal\'Ganis'] = 'High-tier generalists'
       values
     end
   end

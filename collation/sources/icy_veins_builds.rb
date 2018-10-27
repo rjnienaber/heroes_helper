@@ -68,6 +68,7 @@ https://www.icy-veins.com/heroes/lt-morales-build-guide
 https://www.icy-veins.com/heroes/lucio-build-guide
 https://www.icy-veins.com/heroes/lunara-build-guide
 https://www.icy-veins.com/heroes/malfurion-build-guide
+https://www.icy-veins.com/heroes/malganis-build-guide
 https://www.icy-veins.com/heroes/malthael-build-guide
 https://www.icy-veins.com/heroes/maiev-build-guide
 https://www.icy-veins.com/heroes/medivh-build-guide

@@ -36,6 +36,10 @@ function precalculateHero(data, draftInfo) {
 
     if (Number.isNaN(preCalculated)) {
       console.log(`NaN precalculated for ${hero}`);
+      console.log(`Grubby tier: ${grubby[d.grubby_tier]}`)
+      console.log(`Icy Veins tier: ${icyVeins[d.icy_veins_tier]}`)
+      console.log(`Ten Ton tier: ${tenTon[d.ten_ton_tier]}`)
+      console.log(`Win Percent: ${d.win_percent}`)
       console.log(d);
       process.exit(1)
     }

@@ -24,7 +24,7 @@ module Sources
       values['Cho'] = cho_gall
       values['Gall'] = cho_gall
 
-      values['Mal\'Ganis'] = 'S Tier'
+      values['Mal\'Ganis'] = 'S Tier *'
       
       values
     end

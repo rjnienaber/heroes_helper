@@ -18,10 +18,10 @@ roles = Sources::Roles.new(browser)
 ten_ton_tiers = Sources::TenTonTiers.new(browser)
 grubby_tiers = Sources::GrubbyTiers.new(browser)
 icy_veins_tiers = Sources::IcyVeinsTiers.new(browser)
-win_percent_plugin = Sources::WinPercent.new(browser)
+win_percent_source = Sources::WinPercent.new(browser)
 map_compositions = Sources::MapCompositions.new('./cache', ARGV[0])
 
-heroes = (win_percent_plugin.heroes + 
+heroes = (win_percent_source.heroes +
           subroles.heroes + 
           prices.heroes + 
           ten_ton_tiers.heroes + 
@@ -29,9 +29,10 @@ heroes = (win_percent_plugin.heroes +
           icy_veins_tiers.heroes + 
           icy_veins_builds.heroes)
 heroes = heroes.uniq.sort
+
 # collate sources
 hero_stats = Hash[heroes.map do |hero|
-  win_percent = win_percent_plugin[hero]
+  win_percent = win_percent_source[hero]
   gems_and_gold = prices[hero]
   role = roles[hero]
   subrole = subroles[hero]

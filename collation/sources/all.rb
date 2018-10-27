@@ -11,3 +11,9 @@ require_relative 'icy_veins_maps'
 require_relative 'icy_veins_synergies_counters'
 require_relative 'win_percent'
 require_relative 'map_compositions'
+
+require_relative 'hots_logs_export/hero'
+require_relative 'hots_logs_export/composition_stat'
+require_relative 'hots_logs_export/replay_processor'
+require_relative 'hots_logs_export/parser'
+

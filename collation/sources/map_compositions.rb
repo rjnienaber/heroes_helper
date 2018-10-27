@@ -1,67 +1,27 @@
-require 'watir'
-
 module Sources
-  class MapCompositions < Base
-    private
+  class MapCompositions
+    attr_reader :export_path
 
-    def cache_dir
-      "#{self.browser.cache_dir}/map_compositions"
+    def initialize(export_path)
+      @export_path = export_path
     end
 
-    def retrieve_values
-      # go to team composition page
-      content = browser.perform(cache_dir, 'all') do |b|
-        b.goto('https://www.hotslogs.com/Sitewide/TeamCompositions')
-        b.html
-      end 
+    def values
+      parser = HotsLogsExport::Parser.new(export_path)
+      map_lookup, map_total_games, composition_stats = parser.parse
 
-      page = Nokogiri::HTML(content)
-      items = page.css('#ctl00_MainContent_DropDownMapName_DropDown .rddlList li')
-      
-      Hash[items.map do |item|
-        map_name = item.text
-        page = get_map(map_name)
-        rows = page.css('.rgMasterTable tbody tr')
+      grouped_composition_stats = composition_stats.values.group_by { |c| c.map_id}
 
-
-        values = rows.map do |row| 
-          cells = row.css('td')
-          count, win_percent, *roles = cells
-          [
-            count.text.gsub(',','').to_i,
-            win_percent.text.gsub('%','').to_f,
-            roles[0..4].map { |r| r.text}
-          ]
-        end.select { |v| v[2].any? { |r| ['Healer', 'Support'].include?(r) } } # must have healer/support
-
-        total = values.reduce(0) { |sum, v| sum + v[0] }
-        winning_compositions = values.select { |v| v[1] >= 50 && (v[0] / total.to_f) > 0.01 }
-                                     .sort_by { |v| v[1] }.reverse
-        
-
-        [
-          map_name,
-          winning_compositions[0..9].map { |v| {count: v[0], win_percent: v[1], roles: v[2]}}
-        ]
-      end.select { |m| m[1].length != 0}]
-    end
-
-    def get_map(map_name)
-      cache_name = map_name.downcase.gsub(' ', '_').gsub(/[^A-z]/, '')
-      content = browser.perform(cache_dir, cache_name) do |b|
-        unless b.url.include?('TeamCompositions')
-          b.goto('https://www.hotslogs.com/Sitewide/TeamCompositions')
+      map_values = {}
+      grouped_composition_stats.each do |map_id, stats|
+        map = map_lookup[map_id]
+        winning_stats = stats.select { |s| s.win_percentage >= 0.5 && s.games >= (map_total_games[map_id] * 0.01) }
+        map_values[map] = winning_stats.map do |s|
+          { count: s.games, win_percent: (s.win_percentage * 100).round(1), roles: s.subgroups }
         end
-        sleep 5
-
-        b.element(id: 'ctl00_MainContent_DropDownMapName').click
-        sleep 2 # wait for dropdown
-        b.element(text: map_name).click
-        sleep 5 # wait for ajax request
-        b.html
       end
 
-      Nokogiri::HTML(content)
+      map_values
     end
   end
 end

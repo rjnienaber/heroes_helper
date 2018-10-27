@@ -11,6 +11,7 @@ module Sources
       ['Li-Li'] => 'Li Li',
       ['Lt.-Morales'] => 'Lt. Morales',
       ['Lucio'] => 'Lúcio',
+      ['mephisto'] => 'Mephisto',
       ['Sgt.-Hammer'] => 'Sgt. Hammer',
       ['Sgt.Hammer'] => 'Sgt. Hammer',
       ['TheLostVikings', 'Lost Vikings'] => 'The Lost Vikings',

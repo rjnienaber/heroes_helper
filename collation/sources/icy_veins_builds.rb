@@ -71,6 +71,7 @@ https://www.icy-veins.com/heroes/malfurion-build-guide
 https://www.icy-veins.com/heroes/malthael-build-guide
 https://www.icy-veins.com/heroes/maiev-build-guide
 https://www.icy-veins.com/heroes/medivh-build-guide
+https://www.icy-veins.com/heroes/mephisto-build-guide
 https://www.icy-veins.com/heroes/muradin-build-guide
 https://www.icy-veins.com/heroes/murky-build-guide
 https://www.icy-veins.com/heroes/nazeebo-build-guide

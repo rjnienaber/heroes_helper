@@ -20,7 +20,7 @@ ten_ton_tiers = Sources::TenTonTiers.new(browser)
 grubby_tiers = Sources::GrubbyTiers.new(browser)
 icy_veins_tiers = Sources::IcyVeinsTiers.new(browser)
 win_percent_plugin = Sources::WinPercent.new(browser)
-map_compositions = Sources::MapCompositions.new(browser)
+map_compositions = Sources::MapCompositions.new(ARGV[0])
 
 heroes = (win_percent_plugin.heroes + 
           subroles.heroes + 

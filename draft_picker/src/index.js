@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import '@babel/polyfill';
 import * as stats_loader from './solver/stats_loader'
 import Worker from 'worker-loader!./solver/worker.js';
 import UI from './ui'

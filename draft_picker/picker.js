@@ -20,7 +20,7 @@ async function runSolver(data, draftInfo, config, repeats) {
     }
     lastChange += 1;
   }
-  bestResult.elapsed = (new Date() - startTime) / 1000
+  bestResult.elapsed = (new Date() - startTime) / 1000;
 
   return bestResult;
 }

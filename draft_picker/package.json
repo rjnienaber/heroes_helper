@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.4.2",
     "@skymaker/genetic-js": "^0.1.15",
     "bootstrap": ">=4.1.2",
     "bootswatch": ">=4.1.3",

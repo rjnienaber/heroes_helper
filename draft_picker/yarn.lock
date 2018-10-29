@@ -634,6 +634,11 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
+"@fortawesome/fontawesome-free@^5.4.2":
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.4.2.tgz#b2d782da69c45ea61954291e2615a8f7741c96b2"
+  integrity sha512-lpruVv/4AkKUujyzHCNJ8yOceBf7Na/pFaX52ZI/BFMCYkUEwiQ1P0viZg//+WelrNNEgvMOvCMDEDaOMZ/u1w==
+
 "@skymaker/genetic-js@^0.1.15":
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/@skymaker/genetic-js/-/genetic-js-0.1.15.tgz#d0f4b966912e8afc4e540c2454b08ca1d366633e"

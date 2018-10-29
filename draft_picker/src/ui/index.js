@@ -87,7 +87,7 @@ export default class UI {
   displayTeam(element, team, result) {
     element.html('')
     for (const t of team) {
-      const newButton = $('<button type="button" class="btn btn-info btn-xs">').append(t).click(() => this.addToExclude(t));
+      const newButton = $('<button type="button" class="btn btn-info btn-sm btn-dark">').append(t).click(() => this.addToExclude(t));
       element.append(newButton).append(' ')
     }
     element.append(`<span>(score: ${result.fitness.toFixed(2)})</span>`)

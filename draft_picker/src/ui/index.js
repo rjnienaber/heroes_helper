@@ -24,9 +24,7 @@ export default class UI {
     });
 
     this.initializeHeroSelect('#select-exclude', heroes);
-    this.initializeHeroSelect('#select-blue-bans', heroes, 3);
     this.initializeHeroSelect('#select-blue-team', heroes, 5);
-    this.initializeHeroSelect('#select-red-bans', heroes, 3);
     this.initializeHeroSelect('#select-red-team', heroes, 5);
 
     $('#select-exclude')[0].selectize.setValue(['Cho', 'Gall']);
@@ -44,9 +42,7 @@ export default class UI {
       map: $('#select-map')[0].selectize.items[0],
       unavailable: $('#select-exclude')[0].selectize.items,
       blueTeam,
-      blueTeamBans: $('#select-blue-bans')[0].selectize.items,
       redTeam,
-      redTeamBans: $('#select-red-bans')[0].selectize.items
     };
 
     const suggestedPicks = $('#suggested-picks');

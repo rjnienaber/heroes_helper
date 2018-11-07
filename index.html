@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="bootswatch.4.1.3.min.css">
     <link rel="stylesheet" href="selectize.bootstrap3.0.12.6.css">
     <link rel="stylesheet" href="gh-fork-ribbon.0.2.2.css">
-    <script src="stylesheets.b8c67721e14e4b232b7b.js"></script>
+    <script src="stylesheets.def45a0251671dd834f3.js"></script>
     <script src="modernizr.2.8.3.min.js"></script>
   </head>
   <body>
@@ -35,99 +35,98 @@
     </nav>
 
     <div class="container">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="picks-tab" data-toggle="tab" href="#picks" role="tab" aria-controls="picks" aria-selected="true">Picks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="explainer-tab" data-toggle="tab" href="#explainer" role="tab" aria-controls="explainer" aria-selected="false">Explainer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="picks" role="tabpanel" aria-labelledby="picks-tab">
+          <div class="row">
+            <div class="col-sm-3">
+              <span>Map</span>
+            </div>
+            <div class="col-sm-9">
+              <select id="select-map" placeholder="Select a map">
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <span>Exclude heroes</span>
+            </div>
+            <div class="col-sm-9">
+              <select id="select-exclude" class="hero-select" multiple placeholder="Select heroes to exclude">
+              </select>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Blue Team</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <span>Team</span>
+            </div>
+            <div class="col-sm-9">
+              <select id="select-blue-team" class="hero-select" multiple placeholder="Select heroes for team">
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <span>Suggested Picks</span>
+            </div>
+            <div class="col-sm-9">
+              <span id="suggested-picks"></span>
+              <!-- TODO: Font awesome is a pretty hefty import for just one icon -->
+              <span id="calculating-team" class="fas fa-sync glyphicon-refresh-animate"
+                    style="display: none"></span>
+              </span>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Red Team</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <span>Team</span>
+            </div>
+            <div class="col-sm-9">
+              <select id="select-red-team" class="hero-select" multiple placeholder="Select heroes for team">
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <span>Suggested Picks</span>
+            </div>
+            <div class="col-sm-9">
+              <span id="suggested-bans"></span>
+              <span id="calculating-bans" class="fas fa-sync glyphicon-refresh-animate"
+                    style="display: none"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="explainer" role="tabpanel" aria-labelledby="explainer-tab">...</div>
+        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
+      </div>
+
       <hr>
-      <div class="row">
-        <div class="col-sm-3">
-          <span>Map</span>
-        </div>
-        <div class="col-sm-9">
-          <select id="select-map" placeholder="Select a map">
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <span>Exclude heroes</span>
-        </div>
-        <div class="col-sm-9">
-          <select id="select-exclude" class="hero-select" multiple placeholder="Select heroes to exclude">
-          </select>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-sm-12">
-          <h4>Blue Team</h4>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <span>Bans</span>
-        </div>
-        <div class="col-sm-9">
-          <select id="select-blue-bans" class="hero-select" multiple placeholder="Select heroes to ban">
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <span>Team</span>
-        </div>
-        <div class="col-sm-9">
-          <select id="select-blue-team" class="hero-select" multiple placeholder="Select heroes for team">
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <span>Suggested Picks</span>
-        </div>
-        <div class="col-sm-9">
-          <span id="suggested-picks"></span>
-          <!-- TODO: Font awesome is a pretty hefty import for just one icon -->
-          <span id="calculating-team" class="fas fa-sync glyphicon-refresh-animate"
-                style="display: none"></span>
-          </span>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-sm-12">
-          <h4>Red Team</h4>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <span>Bans</span>
-        </div>
-        <div class="col-sm-9">
-          <select id="select-red-bans" class="hero-select" multiple placeholder="Select heroes to ban">
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <span>Team</span>
-        </div>
-        <div class="col-sm-9">
-          <select id="select-red-team" class="hero-select" multiple placeholder="Select heroes for team">
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <span>Suggested Picks</span>
-        </div>
-        <div class="col-sm-9">
-          <span id="suggested-bans"></span>
-          <span id="calculating-bans" class="fas fa-sync glyphicon-refresh-animate"
-                style="display: none"></span>
-          </span>
-        </div>
-      </div>
-      <hr>
-      <a href="https://github.com/rjnienaber/heroes_helper/tree/6f9fcd9">version: 6f9fcd9</a><br>
-      Last updated: 2018-11-07T10:56:52.653Z
+      <a href="https://github.com/rjnienaber/heroes_helper/tree/cc0886f">version: cc0886f</a><br>
+      Last updated: 2018-11-07T11:22:49.849Z
 
     </div>
 
@@ -135,6 +134,6 @@
     <script src="jquery.3.3.1.min.js"></script>
     <script src="bootstrap.4.1.3.min.js"></script>
     <script src="selectize.0.12.6.min.js"></script>
-    <script src="app.832f15342d78bef8b865.js"></script>
+    <script src="app.3fe167867c9fbf088569.js"></script>
   </body>
 </html>

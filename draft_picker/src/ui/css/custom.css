@@ -24,3 +24,7 @@ body {
 .glyphicon-refresh.spinning {
     transform-origin: 25% 50%;
 }
+
+.container {
+    padding-top: 20px;
+}

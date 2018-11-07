@@ -9,7 +9,7 @@
     "build:dev:watch": "node_modules/.bin/webpack --mode development -w --config webpack.config.js",
     "start": "./node_modules/.bin/webpack-dev-server --open",
     "stats": "./node_modules/.bin/webpack --json > webpack_stats.json",
-    "console": "npx babel-node --presets env picker.js"
+    "console": "npx babel-node --presets @babel/preset-env picker.js"
   },
   "author": "",
   "license": "ISC",
@@ -28,7 +28,7 @@
     "@babel/core": "^7.0.0",
     "@babel/node": "^7.0.0",
     "@babel/polyfill": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-env": "^7.1.5",
     "babel-loader": "^8.0.0",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",

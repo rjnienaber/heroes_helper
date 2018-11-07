@@ -21,7 +21,8 @@ module Sources
       ['genji'] => 'Genji',
       ['guldan'] => 'Gul\'dan',
       ['zarya'] => 'Zarya',
-      ['YrelAvatar'] => 'Yrel'
+      ['YrelAvatar'] => 'Yrel',
+      ['Malganis'] => 'Mal\'Ganis'
     }
 
     attr_accessor :browser

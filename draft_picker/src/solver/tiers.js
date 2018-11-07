@@ -1,32 +1,30 @@
-const grubbyTiers = {
-  'S Tier': 100, 
-  'T1 Tier': 66, 
-  'T2 Tier': 33, 
-  'T3 Tier': 0
-}
+const grubbyTiers = ['S Tier', 'T1 Tier', 'T2 Tier', 'T3 Tier'];
 
-const icyVeinsTiers = {
-  'Meta picks': 100,
-  'High-tier generalists': 75,
-  'Mid-tier generalists': 50,
-  'Low-tier generalists': 25,
-  'Situational picks (map, team composition, or counterpick)': 0
-}
+const icyVeinsTiers = ['Meta picks', 'High-tier generalists', 'Mid-tier generalists', 'Low-tier generalists',
+  'Situational picks (map, team composition, or counterpick)'];
 
-const tenTonTiers = {
-  'S Tier *': 100, 
-  'A+ Tier': 75, 
-  'A Tier': 50, 
-  'B Tier': 25, 
-  'C Tier': 0, 
+const tenTonTiers = ['S+ Tier', 'S Tier', 'A+ Tier', 'A Tier', 'B Tier', 'C Tier'];
+
+function calculateTierValues(values) {
+  const increment = 100 / (values.length - 1);
+  let start = 100;
+  return values.reduce((acc, v, index) => {
+    if (index === values.length - 1) {
+      acc[v] = 0;
+    } else {
+      acc[v] = parseInt(start, 0);
+      start -= increment;
+    }
+    return acc;
+  }, {});
 }
 
 export default class Tiers {
   static get all() {
     return {
-      grubby: grubbyTiers,
-      icyVeins: icyVeinsTiers,
-      tenTon: tenTonTiers
+      grubby: calculateTierValues(grubbyTiers),
+      icyVeins: calculateTierValues(icyVeinsTiers),
+      tenTon: calculateTierValues(tenTonTiers)
     }
   }
 }

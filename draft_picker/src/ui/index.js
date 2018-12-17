@@ -1,11 +1,13 @@
 import difference from 'lodash/difference';
+import ExplainerContainer from './explainer_component.jsx'
 
 export default class UI {
-  constructor(stats, Worker) {
+  constructor(stats, Worker, explainerComponent) {
     this.initializing = true;
     this.cache = {};
     this.stats = stats;
     this.worker = Worker;
+    this.explainerComponent = explainerComponent;
   }
 
   copyToClipboard(event) {
@@ -71,8 +73,11 @@ export default class UI {
     this.cache.worker.onmessage = (e) => {
       const {result, isFinished, forBlueTeam} = e.data;
       if (forBlueTeam) {
-        if (isFinished)
+        if (isFinished) {
           $('#calculating-team').hide();
+          this.explainerComponent.explain(draftInfo, result.team);
+        }
+
         const team = difference(result.team, blueTeam);
         this.displayTeam(suggestedPicks, team, result);
       } else {

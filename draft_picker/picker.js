@@ -32,12 +32,10 @@ async function main() {
     data.tiers = Tiers.all;
 
     const draftInfo = {
-      map: 'Volskaya Foundry',
-      unavailable: [''],
-      redTeam: ['Malfurion', 'Genji', 'Chromie', 'Diablo', 'Johanna'],
-      redTeamBans: ['Stukov', 'Medivh'],
-      blueTeam: ['Hanzo', 'Garrosh', 'Zeratul', 'Thrall'],
-      blueTeamBans: ['Maiev', 'Tyrael']
+      map: 'Braxis Holdout',
+      unavailable: ['Cho', 'Gall', 'Sgt. Hammer', 'Gazlowe', 'Zagara', 'Xul', 'Azmodan'],
+      blueTeam: ['Varian', 'Kel\'Thuzad', 'Johanna', 'Nova', 'Deckard Cain'],
+      redTeam: ['Lúcio', 'Chromie', 'The Butcher', 'Sylvanas', 'Garrosh'],
     };
 
     const result = await runSolver(data, draftInfo, {}, 10);

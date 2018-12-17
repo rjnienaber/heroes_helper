@@ -29,7 +29,6 @@ heroes = (win_percent_source.heroes +
           icy_veins_tiers.heroes + 
           icy_veins_builds.heroes)
 heroes = heroes.uniq.sort
-heroes = heroes.reject { |h| h == 'Orphea'}
 
 # collate sources
 hero_stats = Hash[heroes.map do |hero|

@@ -22,7 +22,7 @@ module Sources
       ['guldan'] => 'Gul\'dan',
       ['zarya'] => 'Zarya',
       ['YrelAvatar'] => 'Yrel',
-      ['Malganis'] => 'Mal\'Ganis'
+      ['Malganis', 'malganis'] => 'Mal\'Ganis'
     }
 
     attr_accessor :browser

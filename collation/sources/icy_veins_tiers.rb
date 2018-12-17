@@ -4,12 +4,11 @@ module Sources
     private
 
     def retrieve_values
-      page = browser.download_page('https://www.icy-veins.com/forums/topic/39892-mephisto-meta-tier-list-september-2018/', 'icy_veins_tiers')
+      page = browser.download_page('https://www.icy-veins.com/forums/topic/40514-malganis-meta-tier-list-november-2018/', 'icy_veins_tiers')
       heroes_list = page.css('p + table')
-      # binding.pry
+
       values = Hash[heroes_list.map do |heroes|
         node = heroes.previous.previous
-        node = node.previous.previous if !node.text.downcase.include?('tier')
         tier = node.text.strip
 
         heroes.css('tbody td a').map do |hero|
@@ -28,8 +27,6 @@ module Sources
         values[key] = 'Situational picks (map, team composition, or counterpick)'
       end
 
-
-      values['Mal\'Ganis'] = 'High-tier generalists'
       values
     end
   end

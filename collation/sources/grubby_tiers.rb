@@ -12,8 +12,6 @@ module Sources
         heroes.map { |hero| [hero['id'], tier_text]}
       end.flatten(1)]
 
-      values['Mal\'Ganis'] = 'S Tier' # hard coded to ten ton tiers as missing
-
       values
     end
   end

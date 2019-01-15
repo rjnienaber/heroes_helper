@@ -18,13 +18,13 @@ function precalculateHero(data, draftInfo) {
   }
 
   const winMultiplier = maxWinPercent - minWinPercent;
-  const { grubby, icyVeins, tenTon } = data.tiers; 
+  const { icyVeins, tenTon } = data.tiers;
 
   for (const hero of Object.keys(data.heroes)) {
     const d = data.heroes[hero];
     let preCalculated = 0;
 
-    preCalculated = (grubby[d.grubby_tier] + icyVeins[d.icy_veins_tier] + tenTon[d.ten_ton_tier]) / 3;
+    preCalculated = (icyVeins[d.icy_veins_tier] + tenTon[d.ten_ton_tier]) / 2;
 
     preCalculated += ((d.win_percent - minWinPercent) / winMultiplier) * 100;
 
@@ -36,7 +36,6 @@ function precalculateHero(data, draftInfo) {
 
     if (Number.isNaN(preCalculated)) {
       console.log(`NaN precalculated for ${hero}`);
-      console.log(`Grubby tier: ${grubby[d.grubby_tier]}`)
       console.log(`Icy Veins tier: ${icyVeins[d.icy_veins_tier]}`)
       console.log(`Ten Ton tier: ${tenTon[d.ten_ton_tier]}`)
       console.log(`Win Percent: ${d.win_percent}`)

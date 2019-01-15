@@ -1,4 +1,3 @@
-const grubbyTiers = ['S Tier', 'T1 Tier', 'T2 Tier', 'T3 Tier'];
 
 const icyVeinsTiers = ['Meta picks', 'High-tier generalists', 'Mid-tier generalists', 'Low-tier generalists',
   'Situational picks (map, team composition, or counterpick)'];
@@ -22,7 +21,6 @@ function calculateTierValues(values) {
 export default class Tiers {
   static get all() {
     return {
-      grubby: calculateTierValues(grubbyTiers),
       icyVeins: calculateTierValues(icyVeinsTiers),
       tenTon: calculateTierValues(tenTonTiers)
     }

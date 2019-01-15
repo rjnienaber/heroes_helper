@@ -27,6 +27,8 @@ module Sources
         values[key] = 'Situational picks (map, team composition, or counterpick)'
       end
 
+      values['Imperius'] = 'Low-tier generalists'
+
       values
     end
   end

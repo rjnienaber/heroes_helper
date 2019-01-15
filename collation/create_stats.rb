@@ -16,7 +16,6 @@ prices = Sources::Prices.new(browser)
 subroles = Sources::SubRoles.new(browser)
 roles = Sources::Roles.new(browser)
 ten_ton_tiers = Sources::TenTonTiers.new(browser)
-grubby_tiers = Sources::GrubbyTiers.new(browser)
 icy_veins_tiers = Sources::IcyVeinsTiers.new(browser)
 win_percent_source = Sources::WinPercent.new(browser)
 map_compositions = Sources::MapCompositions.new('./cache', ARGV[0])
@@ -25,8 +24,7 @@ heroes = (win_percent_source.heroes +
           subroles.heroes + 
           prices.heroes + 
           ten_ton_tiers.heroes + 
-          grubby_tiers.heroes + 
-          icy_veins_tiers.heroes + 
+          icy_veins_tiers.heroes +
           icy_veins_builds.heroes)
 heroes = heroes.uniq.sort
 
@@ -37,19 +35,17 @@ hero_stats = Hash[heroes.map do |hero|
   role = roles[hero]
   subrole = subroles[hero]
   ten_ton_tier = ten_ton_tiers[hero]
-  grubby_tier = grubby_tiers[hero]
   icy_veins_tier = icy_veins_tiers[hero]
   map_performance = maps[hero]
   hero_synergies_counters = synergies_counters[hero]
 
   # check all stats for the hero are there
-  unless win_percent && gems_and_gold && role && subrole && ten_ton_tier && grubby_tier && icy_veins_tier && map_performance && hero_synergies_counters
+  unless win_percent && gems_and_gold && role && subrole && ten_ton_tier && icy_veins_tier && map_performance && hero_synergies_counters
     puts "No win percent for #{hero}" unless win_percent
     puts "No gems and gold cost for #{hero}" unless gems_and_gold
     puts "No role for #{hero}" unless role
     puts "No subrole for #{hero}" unless subrole
     puts "No Ten Ton tier for #{hero}" unless ten_ton_tier
-    puts "No Grubby tier for #{hero}" unless grubby_tier
     puts "No Icy Veins tier for #{hero}" unless icy_veins_tier
     puts "No Icy Veins Synergies/Counters for #{hero}" unless hero_synergies_counters
     puts "No Icy Veins Map Performance for #{hero}" unless map_performance
@@ -66,7 +62,6 @@ hero_stats = Hash[heroes.map do |hero|
     win_percent: win_percent.to_f,
     role: role,
     subrole: subrole,
-    grubby_tier: grubby_tier,
     icy_veins_tier: icy_veins_tier,
     ten_ton_tier: ten_ton_tier,
     gems: gems,

@@ -22,7 +22,8 @@ module Sources
       ['guldan'] => 'Gul\'dan',
       ['zarya'] => 'Zarya',
       ['YrelAvatar'] => 'Yrel',
-      ['Malganis', 'malganis'] => 'Mal\'Ganis'
+      ['Malganis', 'malganis'] => 'Mal\'Ganis',
+      ['Imperius2'] => 'Imperius'
     }
 
     attr_accessor :browser

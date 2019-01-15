@@ -56,8 +56,6 @@ async function main() {
         console.log(`  Synergies: ${explained.synergies.join(', ')}`);
       if (explained.counters.length > 0)
         console.log(`  Counters: ${explained.counters.join(', ')}`);
-      if (explained.topTwoGrubbyTiers)
-        console.log(`  Appears in top two Grubby Tier`);
       if (explained.topTwoTenTonTiers)
         console.log(`  Appears in top two Ten Ton Tier`);
       if (explained.topTwoIcyVeinsTiers)

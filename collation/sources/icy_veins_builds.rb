@@ -54,6 +54,7 @@ https://www.icy-veins.com/heroes/greymane-build-guide
 https://www.icy-veins.com/heroes/guldan-build-guide
 https://www.icy-veins.com/heroes/hanzo-build-guide
 https://www.icy-veins.com/heroes/illidan-build-guide
+https://www.icy-veins.com/heroes/imperius-build-guide
 https://www.icy-veins.com/heroes/jaina-build-guide
 https://www.icy-veins.com/heroes/johanna-build-guide
 https://www.icy-veins.com/heroes/junkrat-build-guide

@@ -13,7 +13,7 @@ module Sources
         heroes = elements[i + 2].css('td img')
         heroes.map do |img|
           img_src = img.attributes['src'].value
-          hero = /.*\/(.*).png/.match(img_src)[1]
+          hero = /.*\/(.*).(png|jpg)/.match(img_src)[1]
           values[hero] = tier
         end
       end

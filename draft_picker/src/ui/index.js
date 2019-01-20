@@ -2,10 +2,20 @@ import difference from 'lodash/difference';
 
 export default class UI {
   constructor(stats, Worker) {
-    this.initializing = true
-    this.cache = {}
-    this.stats = stats
-    this.worker = Worker
+    this.initializing = true;
+    this.cache = {};
+    this.stats = stats;
+    this.worker = Worker;
+  }
+
+  copyToClipboard(event) {
+    const heroes = $(event.target).parents('.row').find('#suggested-picks .heroesList,#suggested-bans .heroesList').text();
+    const $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(heroes).select();
+    document.execCommand("copy");
+
+    $temp.remove();
   }
 
   async start() {
@@ -28,6 +38,7 @@ export default class UI {
     this.initializeHeroSelect('#select-red-team', heroes, 5);
 
     $('#select-exclude')[0].selectize.setValue(['Cho', 'Gall']);
+    $('.copy-heroes').click(this.copyToClipboard);
     this.initializing = false;
   }
 
@@ -71,22 +82,23 @@ export default class UI {
         const team = difference(result.team, redTeam);
         this.displayTeam(suggestedBans, team, result);
       }
-    }
+    };
 
     this.cache.worker.onerror = (e) => {
       alert('ERROR: Line ' + e.lineno + ' in ' + e.filename + ': ' + e.message)
-    }
+    };
 
     this.cache.worker.postMessage([this.stats.rawData, draftInfo]);
   }
 
   displayTeam(element, team, result) {
-    element.html('')
+    element.html('');
     for (const t of team) {
       const newButton = $('<button type="button" class="btn btn-info btn-sm btn-dark">').append(t).click(() => this.addToExclude(t));
       element.append(newButton).append(' ')
     }
-    element.append(`<span>(score: ${result.fitness.toFixed(2)})</span>`)
+    element.append(`<span>(score: ${result.fitness.toFixed(2)})</span>`);
+    element.append(`<span class='heroesList' style='display: none'>${team.join(', ')}</span>`);
   }
 
   addToExclude(hero) {

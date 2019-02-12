@@ -4,7 +4,7 @@ module Sources
     private
 
     def retrieve_values
-      page = browser.download_page('https://www.icy-veins.com/forums/topic/40514-malganis-meta-tier-list-november-2018/', 'icy_veins_tiers')
+      page = browser.download_page('https://www.icy-veins.com/forums/topic/41741-imperius-meta-tier-list-january-2019/', 'icy_veins_tiers')
       heroes_list = page.css('p + table')
 
       values = Hash[heroes_list.map do |heroes|
@@ -17,7 +17,7 @@ module Sources
       end.flatten(1)]
 
       # clean up
-      cho_gall_key = 'gall';
+      cho_gall_key = 'gall'
       cho_gall = values.delete(cho_gall_key)
       values['Cho'] = cho_gall
       values['Gall'] = cho_gall

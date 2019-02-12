@@ -36,9 +36,9 @@ function precalculateHero(data, draftInfo) {
 
     if (Number.isNaN(preCalculated)) {
       console.log(`NaN precalculated for ${hero}`);
-      console.log(`Icy Veins tier: ${icyVeins[d.icy_veins_tier]}`)
-      console.log(`Ten Ton tier: ${tenTon[d.ten_ton_tier]}`)
-      console.log(`Win Percent: ${d.win_percent}`)
+      console.log(`Icy Veins tier: ${icyVeins[d.icy_veins_tier]}`);
+      console.log(`Ten Ton tier: ${tenTon[d.ten_ton_tier]}`);
+      console.log(`Win Percent: ${d.win_percent}`);
       console.log(d);
       process.exit(1)
     }
@@ -99,14 +99,14 @@ export default class Solver {
     genetic.isGoodComposition = (entity) => {
       const composition = entity.map((e) => genetic.data[e].subrole).sort();
       return genetic.acceptableCompositions.some(c => composition.every((v, i) => v === c[i]))    
-    }
+    };
 
     genetic.isAcceptableComposition = (entity) => {
       const roles = new Set(entity.map((e) => genetic.data[e].role));
       return roles.has('Warrior') && roles.has('Assassin') && roles.has('Support')
-    }
+    };
 
-    genetic.myCache = {}
+    genetic.myCache = {};
     genetic.fitness = (entity) => {
       let score = genetic.myCache[entity.sort()] || 0;
       if (score !== 0)
@@ -152,8 +152,8 @@ export default class Solver {
 
       if (length === 1) {
         // switch to single point crossover
-        son = son.concat([father[genetic.TEAM_SIZE - 1]])
-        daughter = daughter.concat([mother[genetic.TEAM_SIZE - 1]])
+        son = son.concat([father[genetic.TEAM_SIZE - 1]]);
+        daughter = daughter.concat([mother[genetic.TEAM_SIZE - 1]]);
 
         if (new Set(son).size === genetic.TEAM_SIZE && new Set(daughter).size === genetic.TEAM_SIZE) {
           return [son, daughter];
@@ -210,7 +210,7 @@ export default class Solver {
       webWorkers: false
     };
 
-    const conf = Object.assign({}, defaultConfig, config)
+    const conf = Object.assign({}, defaultConfig, config);
 
     const data = this.genetic.data;
 
@@ -244,6 +244,11 @@ export default class Solver {
               else if (roleB === 'Specialist')
                 return 1;
 
+              if (roleA === 'Multiclass')
+                return -1;
+              else if (roleB === 'Multiclass')
+                return 1;
+
               if (roleA === 'Support')
                 return -1;
               else if (roleB === 'Support')
@@ -252,7 +257,7 @@ export default class Solver {
             }),
             fitness: pop[0].fitness,
             generation
-          }
+          };
          resolve(result);
         }
       };

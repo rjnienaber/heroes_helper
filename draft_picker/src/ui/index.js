@@ -44,7 +44,11 @@ export default class UI {
     this.initializing = false;
   }
 
-  async runSolver(Worker) {
+  get map() {
+    return $('#select-map')[0].selectize.items[0];
+  }
+
+  async runSolver() {
     if (this.initializing)
       return;
 
@@ -52,7 +56,7 @@ export default class UI {
     const redTeam = $('#select-red-team')[0].selectize.items;
 
     const draftInfo = {
-      map: $('#select-map')[0].selectize.items[0],
+      map: this.map,
       unavailable: $('#select-exclude')[0].selectize.items,
       blueTeam,
       redTeam,
@@ -75,7 +79,7 @@ export default class UI {
       if (forBlueTeam) {
         if (isFinished) {
           $('#calculating-team').hide();
-          this.explainerComponent.explain(draftInfo, result.team);
+          this.explainerComponent.explain(result.team, redTeam, this.map);
         }
 
         const team = difference(result.team, blueTeam);

@@ -13,11 +13,12 @@ export default class ExplainerContainer extends Component {
     }
   }
 
-  explain(draftInfo, team) {
+  explain(blueTeam, redTeam, map) {
+    const draftInfo = { map, blueTeam, redTeam };
     this.setState(state => {
       state.explainer = new Explainer(this.state.stats, draftInfo);
       state.draftInfo = draftInfo;
-      state.team = team;
+      state.team = blueTeam;
       return state;
     })
   }

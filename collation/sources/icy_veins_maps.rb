@@ -10,10 +10,10 @@ module Sources
     private
 
     def retrieve_values
-      Hash[builds.values.map do |hero, page|
-        strong = page.css('.heroes_maps_stronger img').map { |img| img.attributes['alt'].value }
-        average = page.css('.heroes_maps_average img').map { |img| img.attributes['alt'].value }
-        weak = page.css('.heroes_maps_weaker img').map { |img| img.attributes['alt'].value }
+      Hash[builds.values.map do |hero, download|
+        strong = download[:page].css('.heroes_maps_stronger img').map { |img| img.attributes['alt'].value }
+        average = download[:page].css('.heroes_maps_average img').map { |img| img.attributes['alt'].value }
+        weak = download[:page].css('.heroes_maps_weaker img').map { |img| img.attributes['alt'].value }
         [hero, {strong: strong, average: average, weak: weak}]
       end]
     end

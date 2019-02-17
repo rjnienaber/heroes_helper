@@ -8,7 +8,8 @@ module Sources
         page = nil
         while page.nil?
           begin
-            page = browser.download_page(url, cache_name) 
+            content = browser.download_page(url, cache_name)
+            page = { url: url, page: content }
           rescue Net::ReadTimeout => e
             p e
             browser.reset
@@ -16,10 +17,10 @@ module Sources
         end
         page
       end
-      Hash[pages.map do |page|
-        title = page.css('.page_title').text.strip
+      Hash[pages.map do |download|
+        title = download[:page].css('.page_title').text.strip
         hero = /(.*) Build Guide/.match(title)[1]
-        [hero, page]
+        [hero, download]
       end]
     end
 

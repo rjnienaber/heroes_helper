@@ -10,9 +10,9 @@ module Sources
     private
 
     def retrieve_values
-      basic = Hash[builds.values.map do |hero, page|
-        synergies = page.css('.heroes_synergies a img').map { |img| img.attributes['title'] ? img.attributes['title'].value : nil }.compact
-        counters = page.css('.heroes_counters a img').map { |img| img.attributes['title'] ? img.attributes['title'].value : nil }.compact
+      basic = Hash[builds.values.map do |hero, download|
+        synergies = download[:page].css('.heroes_synergies a img').map { |img| img.attributes['title'] ? img.attributes['title'].value : nil }.compact
+        counters = download[:page].css('.heroes_counters a img').map { |img| img.attributes['title'] ? img.attributes['title'].value : nil }.compact
         [hero, {synergies: synergies, countered_by: counters}]
       end]
 

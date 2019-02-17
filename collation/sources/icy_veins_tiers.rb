@@ -1,10 +1,14 @@
 module Sources
   class IcyVeinsTiers < Base
 
+    def url
+      'https://www.icy-veins.com/forums/topic/41741-imperius-meta-tier-list-january-2019/'
+    end
+
     private
 
     def retrieve_values
-      page = browser.download_page('https://www.icy-veins.com/forums/topic/41741-imperius-meta-tier-list-january-2019/', 'icy_veins_tiers')
+      page = browser.download_page(self.url, 'icy_veins_tiers')
       heroes_list = page.css('p + table')
 
       values = Hash[heroes_list.map do |heroes|

@@ -1,9 +1,13 @@
 module Sources
   class TenTonTiers < Base
+    def url
+      'http://www.tentonhammer.com/articles/heroes-of-the-storm-tier-list'
+    end
+
     private
 
     def retrieve_values
-      page = browser.download_page('http://www.tentonhammer.com/articles/heroes-of-the-storm-tier-list', 'ten_ton_tiers')
+      page = browser.download_page(self.url, 'ten_ton_tiers')
       elements = page.css('div.field-type-text-with-summary').children
       values = {}
 

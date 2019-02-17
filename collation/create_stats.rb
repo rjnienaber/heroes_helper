@@ -59,6 +59,7 @@ hero_stats = Hash[heroes.map do |hero|
   gems, gold = gems_and_gold
   ten_ton_tier, difficulty, description = ten_ton_tier
   all_stats = {
+    icy_veins_url: icy_veins_builds.values[hero][:url],
     win_percent: win_percent.to_f,
     role: role,
     subrole: subrole,
@@ -71,7 +72,12 @@ hero_stats = Hash[heroes.map do |hero|
   [hero, all_stats]
 end]
 
-stats = {heroes: hero_stats, map_stats: map_compositions.values}
+urls = {
+  icy_veins_tier_list: icy_veins_tiers.url,
+  ten_ton_tiers_list: ten_ton_tiers.url
+}
+
+stats = {heroes: hero_stats, map_stats: map_compositions.values, urls: urls}
 
 # output formats
 Formatters::Yaml.new('stats.yml').format(stats)

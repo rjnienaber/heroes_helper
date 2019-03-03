@@ -77,11 +77,10 @@ export default class UI {
     this.cache.worker.onmessage = (e) => {
       const {result, isFinished, forBlueTeam} = e.data;
       if (forBlueTeam) {
-        if (isFinished) {
+        if (isFinished)
           $('#calculating-team').hide();
-          this.explainerComponent.explain(result.team, redTeam, this.map);
-        }
 
+        this.explainerComponent.explain(result.team, redTeam, this.map);
         const team = difference(result.team, blueTeam);
         this.displayTeam(suggestedPicks, team, result);
       } else {

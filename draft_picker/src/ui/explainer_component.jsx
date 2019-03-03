@@ -38,7 +38,6 @@ export default class ExplainerContainer extends Component {
 
     return (
       <div>
-        <h2>Explainer</h2>
         {team.map((hero, index) => {
           const buildUrl = stats.heroes[hero].icy_veins_url;
           const synergyCounterUrl = buildUrl + '#sec-4';
@@ -48,12 +47,12 @@ export default class ExplainerContainer extends Component {
             <div key={index}>
               <h4><a href={buildUrl}>{hero}</a></h4>
               <ul>
-                {explained.over50WinPercent && <li>Over 50 percent <a href={hotsLogsUrl}>win rate</a></li>}
-                {explained.strongMap && <li>Strong on <a href={mapsUrl}>{draftInfo.map}</a></li>}
-                {explained.synergies.length > 0 && <li><a href={synergyCounterUrl}>Synergies</a>: {explained.synergies.join(', ')}</li>}
-                {explained.counters.length > 0 && <li><a href={synergyCounterUrl}>Counters</a>: {explained.counters.join(', ')}</li>}
-                {explained.topTwoTenTonTiers && <li>Appears in top two tiers of <a href={ten_ton_tiers_list}>Ten Ton Tier</a></li>}
-                {explained.topTwoIcyVeinsTiers && <li>Appears in top two tiers of <a href={icy_veins_tier_list}>Icy Veins Tier</a></li>}
+                {explained.over50WinPercent && <li>Over 50 percent <a href={hotsLogsUrl} target="_blank">win rate</a></li>}
+                {explained.strongMap && <li>Strong on <a href={mapsUrl} target="_blank">{draftInfo.map}</a></li>}
+                {explained.synergies.length > 0 && <li><a href={synergyCounterUrl} target="_blank">Synergies</a>: {explained.synergies.join(', ')}</li>}
+                {explained.counters.length > 0 && <li><a href={synergyCounterUrl} target="_blank">Counters</a>: {explained.counters.join(', ')}</li>}
+                {explained.topTwoTenTonTiers && <li>Appears in top two tiers of <a href={ten_ton_tiers_list} target="_blank">Ten Ton Tier</a></li>}
+                {explained.topTwoIcyVeinsTiers && <li>Appears in top two tiers of <a href={icy_veins_tier_list} target="_blank">Icy Veins Tier</a></li>}
               </ul>
             </div>
           )

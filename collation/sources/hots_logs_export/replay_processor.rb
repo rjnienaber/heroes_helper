@@ -2,18 +2,24 @@ module Sources
   module HotsLogsExport
     class ReplayProcessor
       attr_reader :winning_heroes, :losing_heroes, :composition_stats, :current_replay, :replays, :hero_lookup
-      attr_reader :map_lookup
+      attr_reader :map_lookup, :seven_days_ago
 
       def initialize(hero_lookup, map_lookup, replays)
         @composition_stats = {}
         @replays = replays
         @hero_lookup = hero_lookup
         @map_lookup = map_lookup
+        @seven_days_ago = Date.today - 60
         reset
       end
 
       def process(replay_id, hero_id, is_winner)
         @current_replay = replays[replay_id] if current_replay == nil
+
+        if current_replay.nil? || current_replay[:timestamp] < self.seven_days_ago
+          reset
+          return
+        end
 
         hero = hero_lookup[hero_id]
         hero.increment(is_winner)

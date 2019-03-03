@@ -1,6 +1,8 @@
 require 'csv'
+require 'date'
 
 ALL_MAPS_ID = 1000
+CSV_HEADER_REGEX = /^[0-9]+$/
 
 module Sources
   module HotsLogsExport
@@ -46,7 +48,7 @@ module Sources
       def read_file(file)
         skipped_header = false
         CSV.foreach(file) do |row|
-          unless skipped_header
+          unless skipped_header || CSV_HEADER_REGEX.match(row[0])
             skipped_header = true
             next
           end
@@ -68,7 +70,8 @@ module Sources
           replays[replay_id] = {
               replay_id: replay_id,
               game_mode: game_mode.to_i,
-              map_id: map_id
+              map_id: map_id,
+              timestamp: Date.strptime(timestamp, "%m/%d/%Y %H:%M:%s")
           }
         end
         [replays, map_total_games]

@@ -1,75 +1,23 @@
-function precalculateCompositions(data, draftInfo) {
-  let mapStats = data.map_stats[draftInfo.map];
-  if (!mapStats)
-    mapStats = data.map_stats['All Maps'];
-
-  return mapStats.map((s) => s.roles.sort());
-}
-
-function precalculateHero(data, draftInfo) {
-  const newData = {};
-  let minWinPercent = 100;
-  let maxWinPercent = 0;
-
-  for (const hero in data.heroes) {
-    const d = data.heroes[hero];
-    minWinPercent = Math.min(minWinPercent, d.win_percent);
-    maxWinPercent = Math.max(maxWinPercent, d.win_percent);        
-  }
-
-  const winMultiplier = maxWinPercent - minWinPercent;
-  const { icyVeins, tenTon } = data.tiers;
-
-  for (const hero of Object.keys(data.heroes)) {
-    const d = data.heroes[hero];
-    let preCalculated = 0;
-
-    preCalculated = (icyVeins[d.icy_veins_tier] + tenTon[d.ten_ton_tier]) / 2;
-
-    preCalculated += ((d.win_percent - minWinPercent) / winMultiplier) * 100;
-
-    if (d.maps.strong.includes(draftInfo.map)) {
-      preCalculated += 50;
-    } else if (d.maps.weak.includes(draftInfo.map)) {
-      preCalculated -=50;
-    } 
-
-    if (Number.isNaN(preCalculated)) {
-      console.log(`NaN precalculated for ${hero}`);
-      console.log(`Icy Veins tier: ${icyVeins[d.icy_veins_tier]}`);
-      console.log(`Ten Ton tier: ${tenTon[d.ten_ton_tier]}`);
-      console.log(`Win Percent: ${d.win_percent}`);
-      console.log(d);
-      process.exit(1)
-    }
-
-    newData[hero] = {
-      preCalculated,
-      role: d.role,
-      subrole: d.subrole,
-      synergies: d.synergies,
-      countered_by: d.countered_by
-    }
-  };
-
-  return newData;
-}
+import sample from 'lodash/sample';
+import { compositionSorter } from './composition_sorter';
+import { precalculateCompositions, precalculateHero } from './precalculators';
 
 export default class Solver {
-  constructor(data, draftInfo, Genetic) {
+  constructor(data, draftInfo, Genetic, settings) {
     const genetic = Genetic.create();
     genetic.optimize = Genetic.Optimize.Maximize;
     genetic.select1 = Genetic.Select1.Tournament2;
     genetic.select2 = Genetic.Select2.Tournament2;
 
     genetic.draftInfo = draftInfo;
-    genetic.data = precalculateHero(data, draftInfo);
+    genetic.data = precalculateHero(data, draftInfo, settings);
     genetic.TEAM_SIZE = 5;
     genetic.acceptableCompositions = precalculateCompositions(data, draftInfo);
 
     let unavailable = [ draftInfo.unavailable, draftInfo.blueTeam, draftInfo.redTeam ];
     const unusable = unavailable.reduce((sum, v) => sum.concat(v), []);
     genetic.heroes = [];
+
     for (const hero in data.heroes) {
       if (!unusable.includes(hero)) {
         genetic.heroes.push(hero);
@@ -85,7 +33,7 @@ export default class Solver {
         const seed = genetic.draftInfo.blueTeam.slice(0);
 
         while (seed.length < 5) {
-          seed.push(genetic.randomHero());
+          seed.push(sample(genetic.heroes));
         }
 
         if (new Set(seed).size === genetic.TEAM_SIZE) {
@@ -113,26 +61,26 @@ export default class Solver {
         return score;
 
       if (genetic.isGoodComposition(entity))
-        score += 100;
+        score += 100 * settings.composition;
       else if (genetic.isAcceptableComposition(entity))
-        score += 50;
+        score += 50 * settings.composition;
 
       score += entity.reduce((sum, e) => sum + genetic.data[e].preCalculated, 0) / 5;
 
       // calculate synergies
       const synergies = new Set();
       entity.forEach(e => genetic.data[e].synergies.forEach(s => synergies.add(s)));
-      score += entity.reduce((sum, hero) => sum + (synergies.has(hero) ? 30 : 0), 0);
+      score += entity.reduce((sum, hero) => sum + (synergies.has(hero) ? 30 : 0), 0) * settings.synergies;
 
       // calculate opposing team counters
       const theirCounters = new Set();
       entity.forEach(e => genetic.data[e].countered_by.forEach(s => theirCounters.add(s)));
-      score += genetic.draftInfo.redTeam.reduce((sum, hero) => sum + (theirCounters.has(hero) ? -30 : 0), 0);
+      score += genetic.draftInfo.redTeam.reduce((sum, hero) => sum + (theirCounters.has(hero) ? -30 : 0), 0) * settings.counters;
 
       // calculate our team counters to opposing team
       const ourCounters = new Set();      
       genetic.draftInfo.redTeam.forEach(e => genetic.data[e].countered_by.forEach(s => ourCounters.add(s)));
-      score += entity.reduce((sum, hero) => sum + (ourCounters.has(hero) ? 30 : 0), 0);
+      score += entity.reduce((sum, hero) => sum + (ourCounters.has(hero) ? 30 : 0), 0) * settings.opposingCounters;
 
       genetic.myCache[entity.sort()] = score;
       return score;
@@ -193,11 +141,6 @@ export default class Solver {
       }
     };
 
-    genetic.randomHero = () => {
-      const hero = Math.floor(Math.random() * genetic.heroes.length);
-      return genetic.heroes[hero];
-    };
-
     this.genetic = genetic;
   }
 
@@ -218,43 +161,7 @@ export default class Solver {
       this.genetic.notification = (pop, generation, stats, isFinished) => {
         if (isFinished) {
             const result = {
-            team: pop[0].entity.sort((a,b) => {
-              const roleA = data[a].role;
-              const roleB = data[b].role;
-              if (roleA === roleB) {
-                if (a === b) {
-                  return 0;
-                } else {
-                  return a > b ? 1 : -1
-                }
-              }
-
-              if (roleA === 'Warrior')
-                return -1;
-              else if (roleB === 'Warrior')
-                return 1;
-
-              if (roleA === 'Assassin')
-                return -1;
-              else if (roleB === 'Assassin')
-                return 1;
-
-              if (roleA === 'Specialist')
-                return -1;
-              else if (roleB === 'Specialist')
-                return 1;
-
-              if (roleA === 'Multiclass')
-                return -1;
-              else if (roleB === 'Multiclass')
-                return 1;
-
-              if (roleA === 'Support')
-                return -1;
-              else if (roleB === 'Support')
-                return 1;
-
-            }),
+            team: pop[0].entity.sort((a, b) => compositionSorter(a, b, data)),
             fitness: pop[0].fitness,
             generation
           };

@@ -1,11 +1,11 @@
 import Genetic from '@skymaker/genetic-js';
 import Solver from './solver'
 
-async function runSolver(forBlueTeam, data, draftInfo) {
+async function runSolver(forBlueTeam, data, draftInfo, settings) {
   let bestResult;
   let lastChange = 0;
   while (lastChange !== 20) {
-    const solver = new Solver(data, draftInfo, Genetic);
+    const solver = new Solver(data, draftInfo, Genetic, settings);
     const result = await solver.solve();
     if (!bestResult || bestResult.fitness < result.fitness) {
       postMessage({result, isFinished: false, forBlueTeam});
@@ -19,10 +19,10 @@ async function runSolver(forBlueTeam, data, draftInfo) {
 }
 
 onmessage = async (e) => {
-  const [data, draftInfo] = e.data;
-  runSolver(true, data, draftInfo);
+  const [data, draftInfo, settings] = e.data;
+  runSolver(true, data, draftInfo, settings);
 
   const banDraftInfo = JSON.parse(JSON.stringify(draftInfo));
   Object.assign(banDraftInfo, {redTeam: banDraftInfo.blueTeam, blueTeam: banDraftInfo.redTeam});
-  runSolver(false, data, banDraftInfo);
+  runSolver(false, data, banDraftInfo, settings);
 }

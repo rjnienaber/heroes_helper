@@ -1,13 +1,14 @@
 import difference from 'lodash/difference';
-import ExplainerContainer from './explainer_component.jsx'
 
 export default class UI {
-  constructor(stats, Worker, explainerComponent) {
+  constructor(stats, Worker, explainerComponent, settingsComponent) {
     this.initializing = true;
     this.cache = {};
     this.stats = stats;
     this.worker = Worker;
     this.explainerComponent = explainerComponent;
+    this.settingsComponent = settingsComponent;
+    settingsComponent.addOnChangeListener(() => this.runSolver());
   }
 
   copyToClipboard(event) {
@@ -96,7 +97,7 @@ export default class UI {
       alert('ERROR: Line ' + e.lineno + ' in ' + e.filename + ': ' + e.message)
     };
 
-    this.cache.worker.postMessage([this.stats.rawData, draftInfo]);
+    this.cache.worker.postMessage([this.stats.rawData, draftInfo, this.settingsComponent.current]);
   }
 
   displayTeam(element, team, result) {

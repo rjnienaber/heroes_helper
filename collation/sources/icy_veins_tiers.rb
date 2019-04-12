@@ -2,7 +2,7 @@ module Sources
   class IcyVeinsTiers < Base
 
     def url
-      'https://www.icy-veins.com/forums/topic/41741-imperius-meta-tier-list-january-2019/'
+      'https://www.icy-veins.com/forums/topic/42785-deathwing-meta-tier-list-april-2019/'
     end
 
     private

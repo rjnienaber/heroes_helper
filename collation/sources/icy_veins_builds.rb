@@ -29,6 +29,7 @@ https://www.icy-veins.com/heroes/abathur-build-guide
 https://www.icy-veins.com/heroes/alarak-build-guide
 https://www.icy-veins.com/heroes/alexstrasza-build-guide
 https://www.icy-veins.com/heroes/ana-build-guide
+https://www.icy-veins.com/heroes/anduin-build-guide
 https://www.icy-veins.com/heroes/anubarak-build-guide
 https://www.icy-veins.com/heroes/artanis-build-guide
 https://www.icy-veins.com/heroes/arthas-build-guide

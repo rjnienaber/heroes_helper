@@ -8,11 +8,23 @@ import Explainer from './src/solver/explainer'
 const readFile = util.promisify(fs.readFile);
 
 async function runSolver(data, draftInfo, config, repeats) {
+  const settings = {
+    composition: 1,
+    winPercent: 1,
+    icyVeinsTiers: 0.5,
+    tenTonTiers: 0.5,
+    strongMaps: 1,
+    weakMaps: 1,
+    synergies: 1,
+    counters: 1,
+    opposingCounters: 1
+  };
+
   const startTime = new Date();
   let bestResult;
   let lastChange = 0;
   while (lastChange !== repeats) {
-    const solver = new Solver(data, draftInfo, Genetic);
+    const solver = new Solver(data, draftInfo, Genetic, settings);
     const result = await solver.solve(config);
     if (!bestResult || bestResult.fitness < result.fitness) {
       lastChange = 0;

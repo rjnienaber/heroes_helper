@@ -6,7 +6,7 @@ export function precalculateCompositions(data, draftInfo) {
   return mapStats.map((s) => s.roles.sort());
 }
 
-export function precalculateHero(data, draftInfo, settings) {
+export function precalculateHero(data, draftInfo, ratios) {
   const newData = {};
   let minWinPercent = 100;
   let maxWinPercent = 0;
@@ -24,14 +24,14 @@ export function precalculateHero(data, draftInfo, settings) {
     const d = data.heroes[hero];
     let preCalculated = 0;
 
-    preCalculated = (icyVeins[d.icy_veins_tier] * settings.icyVeinsTiers) + (tenTon[d.ten_ton_tier] * settings.tenTonTiers);
+    preCalculated = (icyVeins[d.icy_veins_tier] * ratios.icyVeinsTiers) + (tenTon[d.ten_ton_tier] * ratios.tenTonTiers);
 
-    preCalculated += ((d.win_percent - minWinPercent) / winMultiplier) * 100 * settings.winPercent;
+    preCalculated += ((d.win_percent - minWinPercent) / winMultiplier) * 100 * ratios.winPercent;
 
     if (d.maps.strong.includes(draftInfo.map)) {
-      preCalculated += 50 * settings.strongMaps;
+      preCalculated += 50 * ratios.strongMaps;
     } else if (d.maps.weak.includes(draftInfo.map)) {
-      preCalculated -=50 * settings.weakMaps;
+      preCalculated -=50 * ratios.weakMaps;
     }
 
     if (Number.isNaN(preCalculated)) {

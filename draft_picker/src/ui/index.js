@@ -21,8 +21,7 @@ export default class UI {
     $temp.remove();
   }
 
-  async start() {
-    const heroes =  this.stats.heroes.map((hero) => ({hero}));
+  async start(heroes) {
     const maps = this.stats.maps.map((map) => ({map}));
 
     // wait for document ready

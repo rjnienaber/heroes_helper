@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import debounce from 'lodash/debounce';
-import { SettingsSlider } from './settings_slider';
+import { SettingsSlider } from './settings_slider.jsx';
+import { PlayerHeroes } from './player_heroes.jsx';
 
 export default class SettingsContainer extends Component {
   constructor(props) {
     super(props);
+
+    this.onChangeListeners = [];
 
     this.composition = React.createRef();
     this.winPercent = React.createRef();
@@ -15,7 +18,12 @@ export default class SettingsContainer extends Component {
     this.synergies = React.createRef();
     this.counters = React.createRef();
     this.opposingCounters = React.createRef();
-    this.onChangeListeners = [];
+
+    this.state = {
+      heroPool: [[], [], [], [], []]
+    };
+
+    this.heroPoolRefs = [0, 1, 2, 3, 4].map(() => React.createRef());
   }
 
   addOnChangeListener(listener) {
@@ -28,7 +36,10 @@ export default class SettingsContainer extends Component {
       'opposingCounters'
     ];
 
-    return fields.reduce((acc, f) => Object.assign(acc, {[f]: this[f].current.value}), {});
+    const ratios = fields.reduce((acc, f) => Object.assign(acc, {[f]: this[f].current.value}), {});
+    const heroPool = this.heroPoolRefs.map(h => h.current.heroes);
+
+    return {ratios, heroPool}
   }
 
   reset() {
@@ -47,11 +58,38 @@ export default class SettingsContainer extends Component {
     this.onChangeListeners.forEach((func) => func());
   }
 
+  onHeroChange(index) {
+    const heroes = this.heroPoolRefs[index].current.heroes;
+    this.setState(state => {
+      state.heroPool[index] = heroes;
+      return state;
+    }, this.onChange);
+  }
+
+  onPlayerMove(index, direction) {
+    let prevIndex = index;
+    let newIndex = direction === 'up' ? index - 1 : index + 1;
+
+    const prevIndexHeroes = this.heroPoolRefs[newIndex].current.heroes;
+    const newIndexHeroes = this.heroPoolRefs[prevIndex].current.heroes;
+
+    this.setState(state => {
+      state.heroPool[newIndex] = newIndexHeroes;
+      state.heroPool[prevIndex] = prevIndexHeroes;
+      return state;
+    }, () => {
+      this.heroPoolRefs[prevIndex].current.heroes = prevIndexHeroes;
+      this.heroPoolRefs[newIndex].current.heroes = newIndexHeroes;
+    });
+  }
+
   render() {
+    const {allHeroes} = this.props;
     const debounceOnChange = debounce(this.onChange.bind(this), 50);
     return (
       <div>
         <div className='container'>
+          <h4>Ratios</h4>
           <SettingsSlider ref={this.composition} name={'Composition'} onChange={debounceOnChange} url={'https://www.hotslogs.com/Sitewide/TeamCompositions'} />
           <SettingsSlider ref={this.winPercent} name={'Win Percent'} onChange={debounceOnChange} url={'https://apiapp.hotslogs.com/API/ReplayCharacterResults/-1,-1,-1/-1'} />
           <SettingsSlider ref={this.icyVeinsTiers} name={'Icy Veins Tiers'} onChange={debounceOnChange} value={50} url={'https://www.icy-veins.com/forums/topic/43323-anduin-meta-tier-list-may-2019/'} />
@@ -70,6 +108,17 @@ export default class SettingsContainer extends Component {
             </div>
           </div>
           <hr />
+          <h4>Hero Pool</h4>
+          {this.state.heroPool.map((p, i) => {
+            return <PlayerHeroes key={`playerHero-${i}`}
+              ref={this.heroPoolRefs[i]}
+              index={i}
+              allHeroes={allHeroes}
+              heroes={p}
+              onChange={this.onHeroChange.bind(this)}
+              onPlayerMove={this.onPlayerMove.bind(this)}
+            />
+          })}
         </div>
       </div>
     );

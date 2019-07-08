@@ -51,10 +51,10 @@ export class SettingsSlider extends Component {
   render() {
     return (
       <div className="row">
-        <div className='col-sm-5'>
+        <div className='col-sm-3'>
           <a href={this.props.url}>{this.props.name}</a>
         </div>
-        <div className='col-sm-4'>
+        <div className='col-sm-6'>
           <Slider
             value={typeof this.state.value === 'number' ? this.state.value : 0}
             onChange={this.handleSliderChange.bind(this)}

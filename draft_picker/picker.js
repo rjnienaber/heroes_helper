@@ -1,9 +1,9 @@
-import fs from 'fs'
-import util from 'util'
-import Genetic from '@skymaker/genetic-js'
-import Solver from './src/solver/solver'
-import Tiers from './src/solver/tiers'
-import Explainer from './src/solver/explainer'
+import fs from 'fs';
+import util from 'util';
+import Genetic from '@skymaker/genetic-js';
+import Solver from './src/solver/solver';
+import Tiers from './src/solver/tiers';
+import Explainer from './src/solver/explainer';
 
 const readFile = util.promisify(fs.readFile);
 
@@ -20,11 +20,19 @@ async function runSolver(data, draftInfo, config, repeats) {
     opposingCounters: 1
   };
 
+  const heroPool = [
+    ['Fenix', 'Thrall', 'Sylvanas', 'Imperius', 'Arthas', 'Varian'],
+    ['Genji', 'Abathur', 'Hanzo', 'Fenix', 'Xul', 'E.T.C.', 'Kael\'thas', 'Zagara'],
+    ['Anduin', 'Alexstrasza', 'Stukov'],
+    ['Johanna', 'E.T.C.', 'Arthas', 'Muradin', 'Diablo'],
+    ['Raynor', 'Jaina', 'Blaze', 'Sylvanas', 'Li-Ming', 'Maiev', 'Kerrigan'],
+  ];
+
   const startTime = new Date();
   let bestResult;
   let lastChange = 0;
   while (lastChange !== repeats) {
-    const solver = new Solver(data, draftInfo, Genetic, {ratios});
+    const solver = new Solver(data, draftInfo, Genetic, { ratios, heroPool });
     const result = await solver.solve(config);
     if (!bestResult || bestResult.fitness < result.fitness) {
       lastChange = 0;
@@ -45,14 +53,14 @@ async function main() {
 
     const draftInfo = {
       map: 'Braxis Holdout',
-      unavailable: ['Cho', 'Gall', 'Sgt. Hammer', 'Gazlowe', 'Zagara', 'Xul', 'Azmodan'],
-      blueTeam: ['Varian', 'Kel\'Thuzad', 'Johanna', 'Nova', 'Deckard Cain'],
-      redTeam: ['Lúcio', 'Chromie', 'The Butcher', 'Sylvanas', 'Garrosh'],
+      unavailable: ['Cho', 'Gall', 'Kael\'thas'],
+      blueTeam: [],
+      redTeam: [],
     };
 
     const result = await runSolver(data, draftInfo, {}, 10);
     const composition = result.team.map((e) => data.heroes[e].role);
-    console.log(`${result.team.join(', ')} - ${composition.join(', ')} - fitness: ${result.fitness.toFixed(2)} (${result.generation})`);        
+    console.log(`${result.team.join(', ')} - ${composition.join(', ')} - fitness: ${result.fitness.toFixed(2)} (${result.generation})`);
 
     console.log('Composition Explained:');
     draftInfo.blueTeam = result.team;
@@ -75,7 +83,7 @@ async function main() {
     }
 
   } catch (err) {
-    console.log(err);  
+    console.log(err);
   }
 }
 

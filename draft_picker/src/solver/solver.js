@@ -1,16 +1,18 @@
 import sample from 'lodash/sample';
+import intersection from 'lodash/intersection';
 import { compositionSorter } from './composition_sorter';
 import { precalculateCompositions, precalculateHero } from './precalculators';
 
 export default class Solver {
   constructor(data, draftInfo, Genetic, settings) {
+    const {heroPool, ratios} = settings;
     const genetic = Genetic.create();
     genetic.optimize = Genetic.Optimize.Maximize;
     genetic.select1 = Genetic.Select1.Tournament2;
     genetic.select2 = Genetic.Select2.Tournament2;
 
     genetic.draftInfo = draftInfo;
-    genetic.data = precalculateHero(data, draftInfo, settings);
+    genetic.data = precalculateHero(data, draftInfo, ratios);
     genetic.TEAM_SIZE = 5;
     genetic.acceptableCompositions = precalculateCompositions(data, draftInfo);
 
@@ -24,15 +26,19 @@ export default class Solver {
     }
 
     genetic.seed = () => {
-      if (genetic.draftInfo.blueTeam.length >= 5)
+      if (genetic.draftInfo.blueTeam.length >= genetic.TEAM_SIZE)
         return genetic.draftInfo.blueTeam;
 
       let counter = 0;
       while (true) {
+        let playerIndex = genetic.draftInfo.blueTeam.length === 0 ? 0 : genetic.draftInfo.blueTeam.length - 1;
         const seed = genetic.draftInfo.blueTeam.slice(0);
 
-        while (seed.length < 5) {
-          seed.push(sample(genetic.heroes));
+        while (seed.length < genetic.TEAM_SIZE) {
+          const availableHeroes = intersection(heroPool[playerIndex] || [], genetic.heroes);
+
+          seed.push(sample(availableHeroes.length === 0 ? genetic.heroes : availableHeroes));
+          playerIndex +=1;
         }
 
         if (new Set(seed).size === genetic.TEAM_SIZE) {
@@ -60,26 +66,26 @@ export default class Solver {
         return score;
 
       if (genetic.isGoodComposition(entity))
-        score += 100 * settings.composition;
+        score += 100 * ratios.composition;
       else if (genetic.isAcceptableComposition(entity))
-        score += 50 * settings.composition;
+        score += 50 * ratios.composition;
 
-      score += entity.reduce((sum, e) => sum + genetic.data[e].preCalculated, 0) / 5;
+      score += entity.reduce((sum, e) => sum + genetic.data[e].preCalculated, 0) / genetic.TEAM_SIZE;
 
       // calculate synergies
       const synergies = new Set();
       entity.forEach(e => genetic.data[e].synergies.forEach(s => synergies.add(s)));
-      score += entity.reduce((sum, hero) => sum + (synergies.has(hero) ? 30 : 0), 0) * settings.synergies;
+      score += entity.reduce((sum, hero) => sum + (synergies.has(hero) ? 30 : 0), 0) * ratios.synergies;
 
       // calculate opposing team counters
       const theirCounters = new Set();
       entity.forEach(e => genetic.data[e].countered_by.forEach(s => theirCounters.add(s)));
-      score += genetic.draftInfo.redTeam.reduce((sum, hero) => sum + (theirCounters.has(hero) ? -30 : 0), 0) * settings.counters;
+      score += genetic.draftInfo.redTeam.reduce((sum, hero) => sum + (theirCounters.has(hero) ? -30 : 0), 0) * ratios.counters;
 
       // calculate our team counters to opposing team
       const ourCounters = new Set();      
       genetic.draftInfo.redTeam.forEach(e => genetic.data[e].countered_by.forEach(s => ourCounters.add(s)));
-      score += entity.reduce((sum, hero) => sum + (ourCounters.has(hero) ? 30 : 0), 0) * settings.opposingCounters;
+      score += entity.reduce((sum, hero) => sum + (ourCounters.has(hero) ? 30 : 0), 0) * ratios.opposingCounters;
 
       genetic.myCache[entity.sort()] = score;
       return score;
@@ -130,12 +136,15 @@ export default class Solver {
         son = son.concat(father.slice(startPoint, firstPoint)).concat(mother.slice(firstPoint, secondPoint)).concat(father.slice(secondPoint, length));
         daughter = daughter.concat(mother.slice(startPoint, firstPoint)).concat(father.slice(firstPoint, secondPoint)).concat(mother.slice(secondPoint, length));
 
+        son = Array.from(new Set(son));
+        daughter = Array.from(new Set(daughter));
 
-        if (new Set(son).size === genetic.TEAM_SIZE && 
-            new Set(daughter).size === genetic.TEAM_SIZE && 
-            son.length === genetic.TEAM_SIZE &&
-            daughter.length === genetic.TEAM_SIZE) {
-          return [son, daughter];
+        if (son.length === genetic.TEAM_SIZE && daughter.length === genetic.TEAM_SIZE) {
+          // double check against hero pools
+          let crossOverGood = true;
+          if (son.every((_, i) => heroPool[i] && heroPool[i].includes(son[i]) && heroPool[i].includes(daughter[i]))) {
+            return [son, daughter];
+          }
         }
       }
     };

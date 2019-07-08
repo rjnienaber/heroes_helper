@@ -12,7 +12,8 @@ const stats = statsLoader.load();
 const explainComponentId = document.getElementById("explainer-component");
 const explainerComponent = ReactDOM.hydrate(<ExplainerContainer stats={stats.rawData}/>, explainComponentId);
 
+const heroes =  stats.heroes.map((hero) => ({hero}));
 const settingsComponentId = document.getElementById("settings-component");
-const settingsComponent = ReactDOM.hydrate(<SettingsContainer />, settingsComponentId);
+const settingsComponent = ReactDOM.hydrate(<SettingsContainer allHeroes={heroes}/>, settingsComponentId);
 
-new UI(stats, Worker, explainerComponent, settingsComponent).start();
+new UI(stats, Worker, explainerComponent, settingsComponent).start(heroes);

@@ -8,7 +8,7 @@ import Explainer from './src/solver/explainer'
 const readFile = util.promisify(fs.readFile);
 
 async function runSolver(data, draftInfo, config, repeats) {
-  const settings = {
+  const ratios = {
     composition: 1,
     winPercent: 1,
     icyVeinsTiers: 0.5,
@@ -24,7 +24,7 @@ async function runSolver(data, draftInfo, config, repeats) {
   let bestResult;
   let lastChange = 0;
   while (lastChange !== repeats) {
-    const solver = new Solver(data, draftInfo, Genetic, settings);
+    const solver = new Solver(data, draftInfo, Genetic, {ratios});
     const result = await solver.solve(config);
     if (!bestResult || bestResult.fitness < result.fitness) {
       lastChange = 0;

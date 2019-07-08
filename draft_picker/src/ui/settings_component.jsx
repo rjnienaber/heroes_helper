@@ -52,10 +52,10 @@ export default class SettingsContainer extends Component {
     return (
       <div>
         <div className='container'>
-          <SettingsSlider ref={this.composition} name={'Composition'} onChange={debounceOnChange} />
-          <SettingsSlider ref={this.winPercent} name={'Win Percent'} onChange={debounceOnChange} />
-          <SettingsSlider ref={this.icyVeinsTiers} name={'Icy Veins Tiers'} onChange={debounceOnChange} value={50}/>
-          <SettingsSlider ref={this.tenTonTiers} name={'Ten Ton Tiers'} onChange={debounceOnChange} value={50}/>
+          <SettingsSlider ref={this.composition} name={'Composition'} onChange={debounceOnChange} url={'https://www.hotslogs.com/Sitewide/TeamCompositions'} />
+          <SettingsSlider ref={this.winPercent} name={'Win Percent'} onChange={debounceOnChange} url={'https://apiapp.hotslogs.com/API/ReplayCharacterResults/-1,-1,-1/-1'} />
+          <SettingsSlider ref={this.icyVeinsTiers} name={'Icy Veins Tiers'} onChange={debounceOnChange} value={50} url={'https://www.icy-veins.com/forums/topic/43323-anduin-meta-tier-list-may-2019/'} />
+          <SettingsSlider ref={this.tenTonTiers} name={'Ten Ton Tiers'} onChange={debounceOnChange} value={50} url={'http://www.tentonhammer.com/articles/heroes-of-the-storm-tier-list'}/>
           <SettingsSlider ref={this.strongMaps} name={'Strong Maps'} onChange={debounceOnChange} />
           <SettingsSlider ref={this.weakMaps} name={'Weak Maps'} onChange={debounceOnChange} />
           <SettingsSlider ref={this.synergies} name={'Synergies'} onChange={debounceOnChange} />
@@ -63,11 +63,13 @@ export default class SettingsContainer extends Component {
           <SettingsSlider ref={this.opposingCounters} name={'Opposing Team Counters'} onChange={debounceOnChange} />
           <div className='row'>
             <div className='col-sm-9'>
+              <i>For strong/weak maps, synergies and counters, these come from the Icy Veins hero pages e.g. <a href='https://www.icy-veins.com/heroes/jaina-build-guide#sec-4'>Jaina</a>.</i>
             </div>
             <div className='col-sm-1'>
               <button className='btn btn-primary' onClick={this.reset.bind(this)}>Reset</button>
             </div>
           </div>
+          <hr />
         </div>
       </div>
     );

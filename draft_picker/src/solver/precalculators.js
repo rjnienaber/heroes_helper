@@ -50,7 +50,7 @@ export function precalculateHero(data, draftInfo, settings) {
       synergies: d.synergies,
       countered_by: d.countered_by
     }
-  };
+  }
 
   return newData;
 }

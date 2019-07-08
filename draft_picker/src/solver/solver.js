@@ -14,8 +14,7 @@ export default class Solver {
     genetic.TEAM_SIZE = 5;
     genetic.acceptableCompositions = precalculateCompositions(data, draftInfo);
 
-    let unavailable = [ draftInfo.unavailable, draftInfo.blueTeam, draftInfo.redTeam ];
-    const unusable = unavailable.reduce((sum, v) => sum.concat(v), []);
+    const unusable = draftInfo.unavailable.concat(draftInfo.blueTeam, draftInfo.redTeam);
     genetic.heroes = [];
 
     for (const hero in data.heroes) {

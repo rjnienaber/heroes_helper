@@ -52,7 +52,7 @@ export class SettingsSlider extends Component {
     return (
       <div className="row">
         <div className='col-sm-5'>
-          {this.props.name}
+          <a href={this.props.url}>{this.props.name}</a>
         </div>
         <div className='col-sm-4'>
           <Slider

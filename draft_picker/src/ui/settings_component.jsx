@@ -1,7 +1,22 @@
 import React, { Component } from "react";
 import debounce from 'lodash/debounce';
+import storage from 'local-storage';
 import { SettingsSlider } from './settings_slider.jsx';
 import { PlayerHeroes } from './player_heroes.jsx';
+
+const RATIOS = [
+  {name: 'Composition', key: 'composition', defaultValue: 100, url: 'https://www.hotslogs.com/Sitewide/TeamCompositions'},
+  {name: 'Win Percent', key: 'winPercent', defaultValue: 100, url: 'https://apiapp.hotslogs.com/API/ReplayCharacterResults/-1,-1,-1/-1'},
+  {name: 'Icy Veins Tiers', key: 'icyVeinsTiers', defaultValue: 50, url: 'https://www.icy-veins.com/forums/topic/43323-anduin-meta-tier-list-may-2019/'},
+  {name: 'Ten Ton Tiers', key: 'tenTonTiers', defaultValue: 50, url: 'http://www.tentonhammer.com/articles/heroes-of-the-storm-tier-list'},
+  {name: 'Strong Maps', key: 'strongMaps', defaultValue: 100},
+  {name: 'Weak Maps', key: 'weakMaps', defaultValue: 100},
+  {name: 'Synergies', key: 'synergies', defaultValue: 100},
+  {name: 'Counters', key: 'counters', defaultValue: 100},
+  {name: 'Opposing Counters', key: 'opposingCounters', defaultValue: 100}
+];
+
+const RATIO_FIELDS = RATIOS.map(r => r.key);
 
 export default class SettingsContainer extends Component {
   constructor(props) {
@@ -9,20 +24,12 @@ export default class SettingsContainer extends Component {
 
     this.onChangeListeners = [];
 
-    this.composition = React.createRef();
-    this.winPercent = React.createRef();
-    this.icyVeinsTiers = React.createRef();
-    this.tenTonTiers = React.createRef();
-    this.strongMaps = React.createRef();
-    this.weakMaps = React.createRef();
-    this.synergies = React.createRef();
-    this.counters = React.createRef();
-    this.opposingCounters = React.createRef();
-
     this.state = {
-      heroPool: [[], [], [], [], []]
+      heroPool: storage('settings.heroPool') || [[], [], [], [], []],
+      ratios: storage('settings.ratios') || RATIOS.reduce((acc, r) => Object.assign(acc, {[r.key]: r.defaultValue}), {})
     };
 
+    this.sliderRefs = RATIOS.reduce((acc, r) => Object.assign(acc, {[r.key]: React.createRef()}), {});
     this.heroPoolRefs = [0, 1, 2, 3, 4].map(() => React.createRef());
   }
 
@@ -31,30 +38,19 @@ export default class SettingsContainer extends Component {
   }
 
   get current() {
-    const fields = [
-      'composition', 'winPercent', 'icyVeinsTiers', 'tenTonTiers', 'strongMaps', 'weakMaps', 'synergies', 'counters',
-      'opposingCounters'
-    ];
-
-    const ratios = fields.reduce((acc, f) => Object.assign(acc, {[f]: this[f].current.value}), {});
+    const ratios = RATIO_FIELDS.reduce((acc, f) => Object.assign(acc, {[f]: this.sliderRefs[f].current.value / 100}), {});
     const heroPool = this.heroPoolRefs.map(h => h.current.heroes);
 
     return {ratios, heroPool}
   }
 
   reset() {
-    this.composition.current.value = 100;
-    this.winPercent.current.value = 100;
-    this.icyVeinsTiers.current.value = 50;
-    this.tenTonTiers.current.value = 50;
-    this.strongMaps.current.value = 100;
-    this.weakMaps.current.value = 100;
-    this.synergies.current.value = 100;
-    this.counters.current.value = 100;
-    this.opposingCounters.current.value = 100;
+    RATIOS.forEach((r) => this.sliderRefs[r.key].current.value = r.defaultValue);
   }
 
   onChange() {
+    const ratios = RATIO_FIELDS.reduce((acc, f) => Object.assign(acc, {[f]: this.sliderRefs[f].current.value}), {});
+    storage('settings.ratios', ratios);
     this.onChangeListeners.forEach((func) => func());
   }
 
@@ -62,6 +58,7 @@ export default class SettingsContainer extends Component {
     const heroes = this.heroPoolRefs[index].current.heroes;
     this.setState(state => {
       state.heroPool[index] = heroes;
+      storage('settings.heroPool', state.heroPool);
       return state;
     }, this.onChange);
   }
@@ -76,6 +73,7 @@ export default class SettingsContainer extends Component {
     this.setState(state => {
       state.heroPool[newIndex] = newIndexHeroes;
       state.heroPool[prevIndex] = prevIndexHeroes;
+      storage('settings.heroPool', state.heroPool);
       return state;
     }, () => {
       this.heroPoolRefs[prevIndex].current.heroes = prevIndexHeroes;
@@ -85,20 +83,21 @@ export default class SettingsContainer extends Component {
 
   render() {
     const {allHeroes} = this.props;
+    const {ratios} = this.state;
     const debounceOnChange = debounce(this.onChange.bind(this), 50);
     return (
       <div>
         <div className='container'>
           <h4>Ratios</h4>
-          <SettingsSlider ref={this.composition} name={'Composition'} onChange={debounceOnChange} url={'https://www.hotslogs.com/Sitewide/TeamCompositions'} />
-          <SettingsSlider ref={this.winPercent} name={'Win Percent'} onChange={debounceOnChange} url={'https://apiapp.hotslogs.com/API/ReplayCharacterResults/-1,-1,-1/-1'} />
-          <SettingsSlider ref={this.icyVeinsTiers} name={'Icy Veins Tiers'} onChange={debounceOnChange} value={50} url={'https://www.icy-veins.com/forums/topic/43323-anduin-meta-tier-list-may-2019/'} />
-          <SettingsSlider ref={this.tenTonTiers} name={'Ten Ton Tiers'} onChange={debounceOnChange} value={50} url={'http://www.tentonhammer.com/articles/heroes-of-the-storm-tier-list'}/>
-          <SettingsSlider ref={this.strongMaps} name={'Strong Maps'} onChange={debounceOnChange} />
-          <SettingsSlider ref={this.weakMaps} name={'Weak Maps'} onChange={debounceOnChange} />
-          <SettingsSlider ref={this.synergies} name={'Synergies'} onChange={debounceOnChange} />
-          <SettingsSlider ref={this.counters} name={'Counters'} onChange={debounceOnChange} />
-          <SettingsSlider ref={this.opposingCounters} name={'Opposing Team Counters'} onChange={debounceOnChange} />
+          {RATIOS.map((r) => {
+            return <SettingsSlider key={`setting-${r.key}`}
+              ref={this.sliderRefs[r.key]}
+              name={r.name}
+              value={ratios[r.key]}
+              onChange={debounceOnChange}
+              url={r.url}
+            />
+          })}
           <div className='row'>
             <div className='col-sm-9'>
               <i>For strong/weak maps, synergies and counters, these come from the Icy Veins hero pages e.g. <a href='https://www.icy-veins.com/heroes/jaina-build-guide#sec-4'>Jaina</a>.</i>

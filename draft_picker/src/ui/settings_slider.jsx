@@ -38,7 +38,7 @@ export class SettingsSlider extends Component {
   }
 
   get value() {
-    return this.state.value / 100;
+    return this.state.value;
   }
 
   set value(val) {
@@ -49,10 +49,12 @@ export class SettingsSlider extends Component {
   }
 
   render() {
+    const {name, url} = this.props;
+    let sliderName = url ? <a href={url}>{name}</a> : name;
     return (
       <div className="row">
         <div className='col-sm-3'>
-          <a href={this.props.url}>{this.props.name}</a>
+          {sliderName}
         </div>
         <div className='col-sm-6'>
           <Slider

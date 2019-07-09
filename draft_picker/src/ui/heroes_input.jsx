@@ -28,7 +28,7 @@ export class HeroesInput extends Component {
           this.parentOnHeroAdd({values: this.select.items, hero})
       },
       onItemRemove: (hero) => {
-        if (!initializing)
+        if (!this.bulkSet)
           this.parentOnHeroRemove({values: this.select.items, hero})
       }
     })[0].selectize;

@@ -82,6 +82,7 @@ https://www.icy-veins.com/heroes/nazeebo-build-guide
 https://www.icy-veins.com/heroes/nova-build-guide
 https://www.icy-veins.com/heroes/orphea-build-guide
 https://www.icy-veins.com/heroes/probius-build-guide
+https://www.icy-veins.com/heroes/qhira-build-guide
 https://www.icy-veins.com/heroes/ragnaros-build-guide
 https://www.icy-veins.com/heroes/raynor-build-guide
 https://www.icy-veins.com/heroes/rehgar-build-guide

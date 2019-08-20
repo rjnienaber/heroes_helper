@@ -12,6 +12,7 @@ module Sources
       values.delete("Cho'gall")
       values['Cho'] = 'Warrior'
       values['Gall'] = 'Assassin'
+      values['Qhira'] = 'Assassin'
 
       values
     end

@@ -2,7 +2,7 @@ module Sources
   class IcyVeinsTiers < Base
 
     def url
-      'https://www.icy-veins.com/forums/topic/43323-anduin-meta-tier-list-may-2019/'
+      'https://www.icy-veins.com/forums/topic/44183-chen-meta-tier-list-june-2019/'
     end
 
     private
@@ -31,8 +31,7 @@ module Sources
         values[key] = 'Situational picks (map, team composition, or counterpick)'
       end
 
-      values['Imperius'] = 'Low-tier generalists'
-
+      values['Qhira'] = 'High-tier generalists'
       values
     end
   end

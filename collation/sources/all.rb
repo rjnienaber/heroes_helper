@@ -1,3 +1,4 @@
+require_relative 'common'
 require_relative 'base'
 require_relative 'browser'
 require_relative 'prices'
@@ -11,8 +12,11 @@ require_relative 'icy_veins_synergies_counters'
 require_relative 'win_percent'
 require_relative 'map_compositions'
 
-require_relative 'hots_logs_export/hero'
-require_relative 'hots_logs_export/composition_stat'
-require_relative 'hots_logs_export/replay_processor'
-require_relative 'hots_logs_export/parser'
+require_relative 'parsers/hots_api_export'
+require_relative 'parsers/hero'
+require_relative 'parsers/hero_talents'
+require_relative 'parsers/composition_stat'
+require_relative 'parsers/hots_logs_export/replay_processor'
+require_relative 'parsers/hots_logs_export/parser'
+
 

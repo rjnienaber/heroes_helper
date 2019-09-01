@@ -17,10 +17,13 @@ subroles = Sources::SubRoles.new(browser)
 roles = Sources::Roles.new(browser)
 ten_ton_tiers = Sources::TenTonTiers.new(browser)
 icy_veins_tiers = Sources::IcyVeinsTiers.new(browser)
-win_percent_source = Sources::WinPercent.new(browser)
-map_compositions = Sources::MapCompositions.new('./cache', ARGV[0])
+# win_percent_source = Sources::WinPercent.new(browser)
+export = Sources::Parsers::HeroTalents.new
+hero_map = export.parse(ARGV[1])
+map_compositions = Sources::MapCompositions.new('./cache', ARGV[0], hero_map)
+composition_stats, win_percent_source = map_compositions.values
 
-heroes = (win_percent_source.heroes +
+heroes = (win_percent_source.keys +
           subroles.heroes + 
           prices.heroes + 
           ten_ton_tiers.heroes + 
@@ -77,7 +80,7 @@ urls = {
   ten_ton_tiers_list: ten_ton_tiers.url
 }
 
-stats = {heroes: hero_stats, map_stats: map_compositions.values, urls: urls}
+stats = {heroes: hero_stats, map_stats: composition_stats, urls: urls}
 
 # output formats
 Formatters::Yaml.new('stats.yml').format(stats)

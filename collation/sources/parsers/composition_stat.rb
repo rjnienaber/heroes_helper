@@ -1,5 +1,5 @@
 module Sources
-  module HotsLogsExport
+  module Parsers
     class CompositionStat
       attr_reader :map_id, :subgroups, :games, :games_won
 

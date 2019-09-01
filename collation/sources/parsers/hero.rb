@@ -1,12 +1,13 @@
 module Sources
-  module HotsLogsExport
+  module Parsers
     class Hero
-      attr_reader :name, :group, :subgroup, :games, :games_won
+      attr_reader :name, :group, :subgroup, :damage, :games, :games_won
 
-      def initialize(name, group, subgroup)
+      def initialize(name, group, subgroup, damage)
         @name = name
         @group = group
         @subgroup = subgroup
+        @damage = damage
         @games = 0
         @games_won = 0
       end

@@ -5,9 +5,9 @@ import { SettingsSlider } from './settings_slider.jsx';
 import { PlayerHeroes } from './player_heroes.jsx';
 
 const RATIOS = [
-  {name: 'Composition', key: 'composition', defaultValue: 100, url: 'https://www.hotslogs.com/Sitewide/TeamCompositions'},
-  {name: 'Win Percent', key: 'winPercent', defaultValue: 100, url: 'https://apiapp.hotslogs.com/API/ReplayCharacterResults/-1,-1,-1/-1'},
-  {name: 'Icy Veins Tiers', key: 'icyVeinsTiers', defaultValue: 50, url: 'https://www.icy-veins.com/forums/topic/43323-anduin-meta-tier-list-may-2019/'},
+  {name: 'Composition', key: 'composition', defaultValue: 100},
+  {name: 'Win Percent', key: 'winPercent', defaultValue: 100, url: 'https://www.heroesprofile.com/Global/Hero/?timeframe_type=major&timeframe=2.47&type=win_rate&role=&hero=&game_type=qm,ud,sl'},
+  {name: 'Icy Veins Tiers', key: 'icyVeinsTiers', defaultValue: 50, url: 'https://www.icy-veins.com/forums/topic/44183-chen-meta-tier-list-june-2019/'},
   {name: 'Ten Ton Tiers', key: 'tenTonTiers', defaultValue: 50, url: 'http://www.tentonhammer.com/articles/heroes-of-the-storm-tier-list'},
   {name: 'Strong Maps', key: 'strongMaps', defaultValue: 100},
   {name: 'Weak Maps', key: 'weakMaps', defaultValue: 100},

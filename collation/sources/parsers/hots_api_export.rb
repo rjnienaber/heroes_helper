@@ -52,7 +52,7 @@ module Sources
           hero.increment(won)
         end
 
-        heroes = Hash[hero_map.map { |k,v| [k, v.win_percentage]}]
+        heroes = Hash[hero_map.map { |k,v| [k, (v.win_percentage * 100).round(2)]}]
 
         [composition_stats, heroes]
       end

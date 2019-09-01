@@ -34,7 +34,7 @@ export default class ExplainerContainer extends Component {
     }
 
     const { icy_veins_tier_list, ten_ton_tiers_list } = stats.urls;
-    const hotsLogsUrl = 'https://www.hotslogs.com/Default';
+    const heroesProfileUrl = 'https://www.heroesprofile.com/Global/Hero/?timeframe_type=major&timeframe=2.47&type=win_rate&role=&hero=&game_type=qm,ud,sl';
 
     return (
       <div>
@@ -47,7 +47,7 @@ export default class ExplainerContainer extends Component {
             <div key={index}>
               <h4><a href={buildUrl}>{hero}</a></h4>
               <ul>
-                {explained.over50WinPercent && <li>Over 50 percent <a href={hotsLogsUrl} target="_blank">win rate</a></li>}
+                {explained.over50WinPercent && <li>Over 50 percent <a href={heroesProfileUrl} target="_blank">win rate</a></li>}
                 {explained.strongMap && <li>Strong on <a href={mapsUrl} target="_blank">{draftInfo.map}</a></li>}
                 {explained.synergies.length > 0 && <li><a href={synergyCounterUrl} target="_blank">Synergies</a>: {explained.synergies.join(', ')}</li>}
                 {explained.counters.length > 0 && <li><a href={synergyCounterUrl} target="_blank">Counters</a>: {explained.counters.join(', ')}</li>}

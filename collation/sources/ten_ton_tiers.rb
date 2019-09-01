@@ -23,11 +23,10 @@ module Sources
       end
 
       # clean up
-      cho_gall_key = 'Chogall';
+      cho_gall_key = 'Chogall'
       cho_gall = values.delete(cho_gall_key)
       values['Cho'] = cho_gall
       values['Gall'] = cho_gall
-      values['Qhira'] = 'A+ Tier'
 
       values
     end
